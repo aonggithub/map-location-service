@@ -1,11 +1,15 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import todoApp from './reducers'
+import { applyMiddleware, createStore } from 'redux'
 import App from './components/App'
+import mapApp from './reducers'
+import thunk from 'redux-thunk'
+import promise from 'redux-promise'
+import createLogger from 'redux-logger'
 
-let store = createStore(todoApp)
+const logger = createLogger()
+let store = createStore(mapApp, applyMiddleware(thunk, promise, logger))
 
 render(
   <Provider store={store}>

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "dev": "concurrently \"webpack -d --watch\" \"nodemon src/server/index.js\"",
-    "build": "webpack -p"
+    "dev": "concurrently \"webpack -d --watch --config webpack.config.js\" \"nodemon src/server/index.js\"",
+    "build": "webpack -p --config webpack.config.prod.js"
   },
   "author": "",
   "license": "ISC",

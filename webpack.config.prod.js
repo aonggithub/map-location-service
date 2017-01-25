@@ -11,7 +11,7 @@ var config = {
     filename: 'bundle.js'
   },
   externals: {
-      'ClientConfig': JSON.stringify(require('./config/dev.config.json'))
+      'ClientConfig': JSON.stringify(require('./config/prod.config.json'))
     },
   module : {
     loaders : [

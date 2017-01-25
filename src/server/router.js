@@ -7,7 +7,6 @@ module.exports = function(app){
   const apiRoutes = express.Router();
 
   //routes will go here
-  apiRoutes.post('/create-new-ticket', _ticketController.createTicket)
   apiRoutes.post('/saveTodo', _todoController.createTodo)
   apiRoutes.get('/getTodo', _todoController.getTodo)
   apiRoutes.get('/getServiceLocation', _serviceLocationController.getServiceLocation)

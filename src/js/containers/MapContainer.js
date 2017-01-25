@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MapPanel from '../components/MapPanel';
 import SearchBox from '../components/SearchBox';
+import { connect } from 'react-redux';
+import { getServiceLoc } from '../action';
 
 export class MapContainer extends Component {
   constructor (props, context) {
@@ -8,35 +10,31 @@ export class MapContainer extends Component {
   }
 
   componentDidMount(){
-
+    this.props.loadServiceLoc();
   }
 
   render(){
-    const serviceLocations =
-      [
-         {
-            id:'A',
-            lat:'13.733313',
-            lng:'100.566274'
-         },
-         {
-            id:'B',
-            lat:'13.736627208213747',
-            lng:'100.57329065878298'
-         },
-         {
-            id:'C',
-            lat:'13.731270257133573',
-            lng:'100.5572832353821'
-         }
-      ];
     return (
       <div>
         <SearchBox />
-        <MapPanel serviceLocations = {serviceLocations} />
+        <MapPanel serviceLocations = {this.props.locations} />
       </div>
     )
   }
 }
 
-export default MapContainer
+const mapStateToProps = (state) => {
+  return {
+    locations: state.locations
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadServiceLoc: () => {
+      dispatch(getServiceLoc())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapContainer)

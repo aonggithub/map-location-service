@@ -12,7 +12,7 @@ class MapPanel extends Component {
       console.log(place);
       // const {id, ...coords} = place;
       // return ({key:id, ...coords});
-      return <MapMaker text={place.id} lat={place.lat} lng={place.lng} />
+      return <MapMaker text={place.name} lat={place.lat} lng={place.lng} />
     })
 
     console.log(servicePlaces);
