@@ -17,7 +17,7 @@ export class MapContainer extends Component {
     return (
       <div>
         <SearchBox />
-        <MapPanel serviceLocations = {this.props.locations} apiKeyParam = {'AIzaSyAlnbBbsXv9DdK8EASl9_G29kSVa4UftaA'}  />
+        <MapPanel serviceLocations = {this.props.locations} apiKeyParam = {''}  />
       </div>
     )
   }

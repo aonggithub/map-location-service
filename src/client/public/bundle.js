@@ -23908,7 +23908,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_SearchBox2.default, null),
-	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations, apiKeyParam: 'AIzaSyAlnbBbsXv9DdK8EASl9_G29kSVa4UftaA' })
+	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations, apiKeyParam: '' })
 	      );
 	    }
 	  }]);
