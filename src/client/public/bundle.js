@@ -23908,7 +23908,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_SearchBox2.default, null),
-	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations })
+	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations, apiKeyParam: 'AIzaSyAlnbBbsXv9DdK8EASl9_G29kSVa4UftaA' })
 	      );
 	    }
 	  }]);
@@ -23986,7 +23986,7 @@
 	        return _react2.default.createElement(_MapMaker2.default, { text: place.name, lat: place.lat, lng: place.lng });
 	      });
 	
-	      console.log(servicePlaces);
+	      console.log(this.props.apiKeyParam);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -24000,7 +24000,11 @@
 	            },
 	            onZoomAnimationStart: function onZoomAnimationStart(obj) {
 	              console.log("onZoomAnimationStart");
-	            } },
+	            },
+	            bootstrapURLKeys: {
+	              key: this.props.apiKeyParam
+	            }
+	          },
 	          servicePlaces
 	        )
 	      );
@@ -24013,7 +24017,8 @@
 	MapPanel.propTypes = {
 	  center: _react.PropTypes.array,
 	  zoom: _react.PropTypes.number,
-	  serviceLocations: _react.PropTypes.any
+	  serviceLocations: _react.PropTypes.any,
+	  apiKeyParam: _react.PropTypes.string
 	};
 	
 	MapPanel.defaultProps = {

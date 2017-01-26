@@ -15,14 +15,18 @@ class MapPanel extends Component {
       return <MapMaker text={place.name} lat={place.lat} lng={place.lng} />
     })
 
-    console.log(servicePlaces);
+    console.log(this.props.apiKeyParam);
     return (
       <div>
         <GoogleMap
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           onClick={(obj) => { console.log(obj) }}
-          onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}>
+          onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
+          bootstrapURLKeys={{
+            key: this.props.apiKeyParam
+          }}
+          >
           {servicePlaces}
         </GoogleMap>
       </div>
@@ -33,7 +37,8 @@ class MapPanel extends Component {
 MapPanel.propTypes = {
   center: PropTypes.array,
   zoom: PropTypes.number,
-  serviceLocations: PropTypes.any
+  serviceLocations: PropTypes.any,
+  apiKeyParam: PropTypes.string
 }
 
 MapPanel.defaultProps = {
