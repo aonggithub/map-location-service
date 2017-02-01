@@ -13,7 +13,7 @@ let store = createStore(mapApp, applyMiddleware(thunk, promise, logger))
 
 render(
   <Provider store={store}>
-    
+    <App />
   </Provider>,
   document.getElementById('root')
 )

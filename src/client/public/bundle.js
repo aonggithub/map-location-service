@@ -84,7 +84,11 @@
 	var logger = (0, _reduxLogger2.default)();
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxPromise2.default, logger));
 	
-	(0, _reactDom.render)(_react2.default.createElement(_reactRedux.Provider, { store: store }), document.getElementById('root'));
+	(0, _reactDom.render)(_react2.default.createElement(
+	  _reactRedux.Provider,
+	  { store: store },
+	  _react2.default.createElement(_App2.default, null)
+	), document.getElementById('root'));
 
 /***/ },
 /* 1 */
