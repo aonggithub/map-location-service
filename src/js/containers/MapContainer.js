@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import MapPanel from '../components/MapPanel';
-import SearchBox from '../components/SearchBox';
 import { connect } from 'react-redux';
-import { getServiceLoc } from '../action';
+import { getServiceLoc, changePOILocation } from '../action';
 
 export class MapContainer extends Component {
   constructor (props, context) {
@@ -16,7 +15,11 @@ export class MapContainer extends Component {
   render(){
     return (
       <div>
-        <MapPanel serviceLocations = {this.props.locations} apiKeyParam = {''}  />
+        <MapPanel serviceLocations = {this.props.locations}
+          apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
+          height = '80%'
+          poiOnClick={this.props.changePOILocationDisplay}
+          />
       </div>
     )
   }
@@ -32,6 +35,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadServiceLoc: () => {
       dispatch(getServiceLoc())
+    },
+    changePOILocationDisplay: (poiObj) => {
+      dispatch(changePOILocation(poiObj))
     }
   }
 }

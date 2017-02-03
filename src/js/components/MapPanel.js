@@ -11,12 +11,18 @@ class MapPanel extends Component {
     const servicePlaces = this.props.serviceLocations.map( place => {
       // const {id, ...coords} = place;
       // return ({key:id, ...coords});
-      return <MapMaker text={place.name} lat={place.lat} lng={place.lng} />
-    })
+      return <MapMaker text={place.name}
+                      lat={place.lat}
+                      lng={place.lng}
+                      title= {place.title}
+                      rated= {place.rated}
+                      poiOnClick={this.props.poiOnClick}
+                      />
+                  }, this)
 
     console.log(this.props.apiKeyParam);
     return (
-      <div>
+      <div style={{height : this.props.height}}>
         <GoogleMap
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
@@ -35,13 +41,16 @@ MapPanel.propTypes = {
   center: PropTypes.array,
   zoom: PropTypes.number,
   serviceLocations: PropTypes.any,
-  apiKeyParam: PropTypes.string
+  apiKeyParam: PropTypes.string,
+  height: PropTypes.any,
+  poiOnClick: PropTypes.func
 }
 
 MapPanel.defaultProps = {
   center: {lat: 13.733313, lng: 100.566274},
   zoom: 15,
-  serviceLocations: [{id: 'A', lat: 13.733313, lng: 100.566274}]
+  serviceLocations: [{id: 'A', lat: 13.733313, lng: 100.566274}],
+  height: '100%'
 };
 
 export default MapPanel

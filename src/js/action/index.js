@@ -11,6 +11,13 @@ export const addServiceLoc = (text) => {
   }
 }
 
+export const changePOILocation = (poiObj) => {
+  return {
+      type: 'CHANGE_POI_LOC',
+      payload: poiObj
+  }
+}
+
 export const getServiceLoc = () => {
   return function(dispatch){
     // Setting fixed data
@@ -21,20 +28,26 @@ export const getServiceLoc = () => {
            {
               _id: "5860928f360fbe6728fd2e54",
               name:'A',
+              title: 'RSU Tower',
               lat:'13.733313',
-              lng:'100.566274'
+              lng:'100.566274',
+              rated:5
            },
            {
              _id: "5860928f360fbe6728fd2e55",
               name:'B',
+              title: 'Samitivej Sukhumvit Hospital',
               lat:'13.736627208213747',
-              lng:'100.57329065878298'
+              lng:'100.57329065878298',
+              rated:5
            },
            {
              _id: "5860928f360fbe6728fd2e56",
               name:'C',
+              title: 'Benjakitti Park',
               lat:'13.731270257133573',
-              lng:'100.5572832353821'
+              lng:'100.5572832353821',
+              rated:5
            }
         ];
 

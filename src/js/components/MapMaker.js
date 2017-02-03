@@ -10,15 +10,19 @@ class MapMaker extends Component {
   render() {
     const style = this.props.$hover ? mapMakerStyle : mapMakerStyleHover;
     return (
-       <div style={style}>
-          {this.props.text}
+       <div style={style}
+            onClick={() => {this.props.poiOnClick(this.props) }}>
+          <span className="glyphicon glyphicon-home"></span>
        </div>
     );
   }
 }
 
 MapMaker.propTypes = {
-  text: PropTypes.string
+  text: PropTypes.string,
+  poiOnClick: PropTypes.func,
+  title: PropTypes.string,
+  rated: PropTypes.number
 }
 
 MapMaker.defaultProps = {

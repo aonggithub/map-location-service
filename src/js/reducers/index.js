@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import locations from './locations'
+import poiLocation from './poiLocation'
 
 const mapApp = combineReducers({
-  locations
+  locations,
+  poiLocation
 })
 
 export default mapApp

@@ -23834,6 +23834,10 @@
 	
 	var _MapContainer2 = _interopRequireDefault(_MapContainer);
 	
+	var _POIContainer = __webpack_require__(/*! ../containers/POIContainer */ 274);
+	
+	var _POIContainer2 = _interopRequireDefault(_POIContainer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var App = function App() {
@@ -23841,7 +23845,8 @@
 	    'div',
 	    null,
 	    'Google map',
-	    _react2.default.createElement(_MapContainer2.default, null)
+	    _react2.default.createElement(_MapContainer2.default, null),
+	    _react2.default.createElement(_POIContainer2.default, null)
 	  );
 	};
 	
@@ -23870,10 +23875,6 @@
 	var _MapPanel = __webpack_require__(/*! ../components/MapPanel */ 204);
 	
 	var _MapPanel2 = _interopRequireDefault(_MapPanel);
-	
-	var _SearchBox = __webpack_require__(/*! ../components/SearchBox */ 230);
-	
-	var _SearchBox2 = _interopRequireDefault(_SearchBox);
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 172);
 	
@@ -23907,7 +23908,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations, apiKeyParam: '' })
+	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
+	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
+	          height: '80%',
+	          poiOnClick: this.props.changePOILocationDisplay
+	        })
 	      );
 	    }
 	  }]);
@@ -23925,6 +23930,9 @@
 	  return {
 	    loadServiceLoc: function loadServiceLoc() {
 	      dispatch((0, _action.getServiceLoc)());
+	    },
+	    changePOILocationDisplay: function changePOILocationDisplay(poiObj) {
+	      dispatch((0, _action.changePOILocation)(poiObj));
 	    }
 	  };
 	};
@@ -23978,16 +23986,24 @@
 	  _createClass(MapPanel, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var servicePlaces = this.props.serviceLocations.map(function (place) {
 	        // const {id, ...coords} = place;
 	        // return ({key:id, ...coords});
-	        return _react2.default.createElement(_MapMaker2.default, { text: place.name, lat: place.lat, lng: place.lng });
-	      });
+	        return _react2.default.createElement(_MapMaker2.default, { text: place.name,
+	          lat: place.lat,
+	          lng: place.lng,
+	          title: place.title,
+	          rated: place.rated,
+	          poiOnClick: _this2.props.poiOnClick
+	        });
+	      }, this);
 	
 	      console.log(this.props.apiKeyParam);
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { style: { height: this.props.height } },
 	        _react2.default.createElement(
 	          _googleMapReact2.default,
 	          {
@@ -24014,13 +24030,16 @@
 	  center: _react.PropTypes.array,
 	  zoom: _react.PropTypes.number,
 	  serviceLocations: _react.PropTypes.any,
-	  apiKeyParam: _react.PropTypes.string
+	  apiKeyParam: _react.PropTypes.string,
+	  height: _react.PropTypes.any,
+	  poiOnClick: _react.PropTypes.func
 	};
 	
 	MapPanel.defaultProps = {
 	  center: { lat: 13.733313, lng: 100.566274 },
 	  zoom: 15,
-	  serviceLocations: [{ id: 'A', lat: 13.733313, lng: 100.566274 }]
+	  serviceLocations: [{ id: 'A', lat: 13.733313, lng: 100.566274 }],
+	  height: '100%'
 	};
 	
 	exports.default = MapPanel;
@@ -27158,11 +27177,16 @@
 	  _createClass(MapMaker, [{
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var style = this.props.$hover ? _MapMaker_styles.mapMakerStyle : _MapMaker_styles.mapMakerStyleHover;
 	      return _react2.default.createElement(
 	        'div',
-	        { style: style },
-	        this.props.text
+	        { style: style,
+	          onClick: function onClick() {
+	            _this2.props.poiOnClick(_this2.props);
+	          } },
+	        _react2.default.createElement('span', { className: 'glyphicon glyphicon-home' })
 	      );
 	    }
 	  }]);
@@ -27171,7 +27195,10 @@
 	}(_react.Component);
 	
 	MapMaker.propTypes = {
-	  text: _react.PropTypes.string
+	  text: _react.PropTypes.string,
+	  poiOnClick: _react.PropTypes.func,
+	  title: _react.PropTypes.string,
+	  rated: _react.PropTypes.number
 	};
 	
 	MapMaker.defaultProps = {};
@@ -27190,8 +27217,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var K_WIDTH = 40;
-	var K_HEIGHT = 40;
+	var K_WIDTH = 30;
+	var K_HEIGHT = 30;
 	
 	var mapMakerStyle = {
 	  // initially any map object has left top corner at lat lng coordinates
@@ -27202,104 +27229,27 @@
 	  left: -K_WIDTH / 2,
 	  top: -K_HEIGHT / 2,
 	
-	  border: '5px solid #f44336',
+	  border: '2px solid #f44336',
 	  borderRadius: K_HEIGHT,
 	  backgroundColor: 'white',
 	  textAlign: 'center',
 	  color: '#3f51b5',
-	  fontSize: 16,
+	  //fontSize: 16,
+	  fontSize: 10,
 	  fontWeight: 'bold',
 	  padding: 4,
 	  boxSizing: 'border-box'
 	};
 	
 	var mapMakerStyleHover = Object.assign({}, mapMakerStyle);
-	mapMakerStyleHover.border = '5px solid #1164ec';
+	mapMakerStyleHover.border = '2px solid #1164ec';
+	mapMakerStyleHover.color = '#1164ec';
 	
 	exports.mapMakerStyle = mapMakerStyle;
 	exports.mapMakerStyleHover = mapMakerStyleHover;
 
 /***/ },
-/* 230 */
-/*!****************************************!*\
-  !*** ./src/js/components/SearchBox.js ***!
-  \****************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var SearchBox = function (_React$Component) {
-	  _inherits(SearchBox, _React$Component);
-	
-	  function SearchBox() {
-	    _classCallCheck(this, SearchBox);
-	
-	    return _possibleConstructorReturn(this, (SearchBox.__proto__ || Object.getPrototypeOf(SearchBox)).apply(this, arguments));
-	  }
-	
-	  _createClass(SearchBox, [{
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      return _react2.default.createElement('input', _extends({ ref: function ref(input) {
-	          _this2.text = input;
-	        }
-	      }, this.props, {
-	        type: 'text' }));
-	    }
-	  }, {
-	    key: 'onPlacesChanged',
-	    value: function onPlacesChanged() {
-	      if (this.props.onPlacesChanged) {
-	        this.props.onPlacesChanged(this.searchBox.getPlaces());
-	      }
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var input = this.text;
-	      this.searchBox = new google.maps.places.SearchBox(input);
-	      this.searchBox.addListener('places_changed', this.onPlacesChanged);
-	    }
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      this.searchBox.removeListener('places_changed', this.onPlacesChanged);
-	    }
-	  }]);
-	
-	  return SearchBox;
-	}(_react2.default.Component);
-	
-	SearchBox.propTypes = {
-	  placeholder: _react2.default.PropTypes.string,
-	  onPlacesChanged: _react2.default.PropTypes.func
-	};
-	
-	exports.default = SearchBox;
-
-/***/ },
+/* 230 */,
 /* 231 */
 /*!********************************!*\
   !*** ./src/js/action/index.js ***!
@@ -27311,7 +27261,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getServiceLoc = exports.addServiceLoc = undefined;
+	exports.getServiceLoc = exports.changePOILocation = exports.addServiceLoc = undefined;
 	
 	var _axios = __webpack_require__(/*! axios */ 232);
 	
@@ -27330,6 +27280,13 @@
 	  };
 	};
 	
+	var changePOILocation = exports.changePOILocation = function changePOILocation(poiObj) {
+	  return {
+	    type: 'CHANGE_POI_LOC',
+	    payload: poiObj
+	  };
+	};
+	
 	var getServiceLoc = exports.getServiceLoc = function getServiceLoc() {
 	  return function (dispatch) {
 	    // Setting fixed data
@@ -27338,18 +27295,24 @@
 	      var serviceLocations = [{
 	        _id: "5860928f360fbe6728fd2e54",
 	        name: 'A',
+	        title: 'RSU Tower',
 	        lat: '13.733313',
-	        lng: '100.566274'
+	        lng: '100.566274',
+	        rated: 5
 	      }, {
 	        _id: "5860928f360fbe6728fd2e55",
 	        name: 'B',
+	        title: 'Samitivej Sukhumvit Hospital',
 	        lat: '13.736627208213747',
-	        lng: '100.57329065878298'
+	        lng: '100.57329065878298',
+	        rated: 5
 	      }, {
 	        _id: "5860928f360fbe6728fd2e56",
 	        name: 'C',
+	        title: 'Benjakitti Park',
 	        lat: '13.731270257133573',
-	        lng: '100.5572832353821'
+	        lng: '100.5572832353821',
+	        rated: 5
 	      }];
 	
 	      dispatch({
@@ -28967,10 +28930,15 @@
 	
 	var _locations2 = _interopRequireDefault(_locations);
 	
+	var _poiLocation = __webpack_require__(/*! ./poiLocation */ 276);
+	
+	var _poiLocation2 = _interopRequireDefault(_poiLocation);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapApp = (0, _redux.combineReducers)({
-	  locations: _locations2.default
+	  locations: _locations2.default,
+	  poiLocation: _poiLocation2.default
 	});
 	
 	exports.default = mapApp;
@@ -30726,6 +30694,182 @@
 	  transformer: undefined
 	};
 	module.exports = exports['default'];
+
+/***/ },
+/* 274 */
+/*!*******************************************!*\
+  !*** ./src/js/containers/POIContainer.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.POIContainer = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _POIPanel = __webpack_require__(/*! ../components/POIPanel */ 275);
+	
+	var _POIPanel2 = _interopRequireDefault(_POIPanel);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 172);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var POIContainer = exports.POIContainer = function (_Component) {
+	  _inherits(POIContainer, _Component);
+	
+	  function POIContainer(props, context) {
+	    _classCallCheck(this, POIContainer);
+	
+	    return _possibleConstructorReturn(this, (POIContainer.__proto__ || Object.getPrototypeOf(POIContainer)).call(this, props, context));
+	  }
+	
+	  _createClass(POIContainer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_POIPanel2.default, { poiLocation: this.props.poiLocation,
+	          height: '15%' })
+	      );
+	    }
+	  }]);
+	
+	  return POIContainer;
+	}(_react.Component);
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    poiLocation: state.poiLocation
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(POIContainer);
+
+/***/ },
+/* 275 */
+/*!***************************************!*\
+  !*** ./src/js/components/POIPanel.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var POIPanel = function (_Component) {
+	  _inherits(POIPanel, _Component);
+	
+	  function POIPanel(props, context) {
+	    _classCallCheck(this, POIPanel);
+	
+	    return _possibleConstructorReturn(this, (POIPanel.__proto__ || Object.getPrototypeOf(POIPanel)).call(this, props, context));
+	  }
+	
+	  _createClass(POIPanel, [{
+	    key: 'render',
+	    value: function render() {
+	      console.log(this.props.poiLocation);
+	      return _react2.default.createElement(
+	        'div',
+	        { style: { height: this.props.height } },
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', width: '30%' } },
+	          _react2.default.createElement('img', { src: '../img/photo-album-icon-png-14.png', height: '100%' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', paddingTop: '10px' } },
+	          _react2.default.createElement(
+	            'span',
+	            { style: { fontWeight: 'bold' } },
+	            this.props.poiLocation.title
+	          ),
+	          _react2.default.createElement('br', null),
+	          this.props.poiLocation.rated
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return POIPanel;
+	}(_react.Component);
+	
+	POIPanel.propTypes = {
+	  center: _react.PropTypes.array,
+	  zoom: _react.PropTypes.number,
+	  poiLocation: _react.PropTypes.any,
+	  height: _react.PropTypes.any
+	};
+	
+	POIPanel.defaultProps = {
+	  center: { lat: 13.733313, lng: 100.566274 },
+	  zoom: 15,
+	  poiLocation: 'Test'
+	};
+	
+	exports.default = POIPanel;
+
+/***/ },
+/* 276 */
+/*!****************************************!*\
+  !*** ./src/js/reducers/poiLocation.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var poiLocation = function poiLocation() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'CHANGE_POI_LOC':
+	      return action.payload;
+	    default:
+	      return state;
+	  }
+	};
+	
+	exports.default = poiLocation;
 
 /***/ }
 /******/ ]);
