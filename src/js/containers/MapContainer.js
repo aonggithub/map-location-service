@@ -16,7 +16,7 @@ export class MapContainer extends Component {
     return (
       <div>
         <MapPanel serviceLocations = {this.props.locations}
-          apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
+          apiKeyParam = {''}
           height = '80%'
           poiOnClick={this.props.changePOILocationDisplay}
           />
