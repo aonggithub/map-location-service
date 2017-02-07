@@ -8,7 +8,7 @@ class MapPanel extends Component {
   }
 
   render() {
-    const servicePlaces = this.props.serviceLocations.map( place => {
+    let servicePlaces = this.props.serviceLocations.map( place => {
       // const {id, ...coords} = place;
       // return ({key:id, ...coords});
       return <MapMaker text={place.name}
@@ -18,13 +18,35 @@ class MapPanel extends Component {
                       rated= {place.rated}
                       poiOnClick={this.props.poiOnClick}
                       />
-                  }, this)
+                  }, this);
 
-    console.log(this.props.apiKeyParam);
+    if(this.props.center != null){
+      let currentLocation = <MapMaker
+            lat={this.props.center.lat}
+            lng={this.props.center.lng}
+            title= "xxx"
+            rated= "xxx"
+            category= "0"
+            />
+
+      servicePlaces.push(currentLocation);
+    }
+
+
+    let createMapOptions= function (maps) {
+                  return {
+                    panControl: false,
+                    mapTypeControl: false,
+                    scrollwheel: false,
+                    styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
+                  }
+                }
+
+    console.log(servicePlaces);
     return (
       <div style={{height : this.props.height}}>
         <GoogleMap
-          defaultCenter={this.props.center}
+          center={this.props.center}
           defaultZoom={this.props.zoom}
           onClick={(obj) => { console.log(obj) }}
           onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
@@ -47,7 +69,7 @@ MapPanel.propTypes = {
 }
 
 MapPanel.defaultProps = {
-  center: {lat: 13.733313, lng: 100.566274},
+  center: {lat: 13.675960412398283, lng: 100.66582988631592},
   zoom: 15,
   serviceLocations: [{id: 'A', lat: 13.733313, lng: 100.566274}],
   height: '100%'

@@ -63,19 +63,19 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _reducers = __webpack_require__(/*! ./reducers */ 258);
+	var _reducers = __webpack_require__(/*! ./reducers */ 259);
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _reduxThunk = __webpack_require__(/*! redux-thunk */ 260);
+	var _reduxThunk = __webpack_require__(/*! redux-thunk */ 262);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxPromise = __webpack_require__(/*! redux-promise */ 261);
+	var _reduxPromise = __webpack_require__(/*! redux-promise */ 263);
 	
 	var _reduxPromise2 = _interopRequireDefault(_reduxPromise);
 	
-	var _reduxLogger = __webpack_require__(/*! redux-logger */ 268);
+	var _reduxLogger = __webpack_require__(/*! redux-logger */ 270);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
@@ -23834,7 +23834,7 @@
 	
 	var _MapContainer2 = _interopRequireDefault(_MapContainer);
 	
-	var _POIContainer = __webpack_require__(/*! ../containers/POIContainer */ 274);
+	var _POIContainer = __webpack_require__(/*! ../containers/POIContainer */ 257);
 	
 	var _POIContainer2 = _interopRequireDefault(_POIContainer);
 	
@@ -23878,7 +23878,7 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 172);
 	
-	var _action = __webpack_require__(/*! ../action */ 231);
+	var _action = __webpack_require__(/*! ../action */ 230);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -23894,13 +23894,32 @@
 	  function MapContainer(props, context) {
 	    _classCallCheck(this, MapContainer);
 	
-	    return _possibleConstructorReturn(this, (MapContainer.__proto__ || Object.getPrototypeOf(MapContainer)).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, (MapContainer.__proto__ || Object.getPrototypeOf(MapContainer)).call(this, props, context));
+	
+	    _this.state = { initialPosition: null };
+	    return _this;
 	  }
 	
 	  _createClass(MapContainer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.props.loadServiceLoc();
+	      this.initialCurrentPos();
+	    }
+	  }, {
+	    key: 'initialCurrentPos',
+	    value: function initialCurrentPos() {
+	      var _this2 = this;
+	
+	      // Initial Current position.
+	      if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(function (position) {
+	          var initialPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
+	          _this2.setState({ initialPosition: initialPosition });
+	        });
+	      } else {
+	        console.log("Geolocation is not supported by this browser.");
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -23909,9 +23928,10 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
-	          apiKeyParam: '',
+	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
 	          height: '80%',
-	          poiOnClick: this.props.changePOILocationDisplay
+	          poiOnClick: this.props.changePOILocationDisplay,
+	          center: this.state.initialPosition
 	        })
 	      );
 	    }
@@ -24000,14 +24020,35 @@
 	        });
 	      }, this);
 	
-	      console.log(this.props.apiKeyParam);
+	      if (this.props.center != null) {
+	        var currentLocation = _react2.default.createElement(_MapMaker2.default, {
+	          lat: this.props.center.lat,
+	          lng: this.props.center.lng,
+	          title: 'xxx',
+	          rated: 'xxx',
+	          category: '0'
+	        });
+	
+	        servicePlaces.push(currentLocation);
+	      }
+	
+	      var createMapOptions = function createMapOptions(maps) {
+	        return {
+	          panControl: false,
+	          mapTypeControl: false,
+	          scrollwheel: false,
+	          styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
+	        };
+	      };
+	
+	      console.log(servicePlaces);
 	      return _react2.default.createElement(
 	        'div',
 	        { style: { height: this.props.height } },
 	        _react2.default.createElement(
 	          _googleMapReact2.default,
 	          {
-	            defaultCenter: this.props.center,
+	            center: this.props.center,
 	            defaultZoom: this.props.zoom,
 	            onClick: function onClick(obj) {
 	              console.log(obj);
@@ -24036,7 +24077,7 @@
 	};
 	
 	MapPanel.defaultProps = {
-	  center: { lat: 13.733313, lng: 100.566274 },
+	  center: { lat: 13.675960412398283, lng: 100.66582988631592 },
 	  zoom: 15,
 	  serviceLocations: [{ id: 'A', lat: 13.733313, lng: 100.566274 }],
 	  height: '100%'
@@ -27180,13 +27221,23 @@
 	      var _this2 = this;
 	
 	      var style = this.props.$hover ? _MapMaker_styles.mapMakerStyle : _MapMaker_styles.mapMakerStyleHover;
+	      var categoryIcon = "glyphicon glyphicon-home";
+	      var img = "";
+	      if (this.props.category == "0") {
+	        // If category is 0, that means current location
+	        style = {};
+	        categoryIcon = "";
+	        img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png";
+	        //categoryIcon = "glyphicon glyphicon-map-marker";
+	      }
 	      return _react2.default.createElement(
 	        'div',
 	        { style: style,
 	          onClick: function onClick() {
 	            _this2.props.poiOnClick(_this2.props);
 	          } },
-	        _react2.default.createElement('span', { className: 'glyphicon glyphicon-home' })
+	        _react2.default.createElement('span', { className: categoryIcon }),
+	        _react2.default.createElement('img', { src: img, style: { width: '50px' } })
 	      );
 	    }
 	  }]);
@@ -27198,7 +27249,8 @@
 	  text: _react.PropTypes.string,
 	  poiOnClick: _react.PropTypes.func,
 	  title: _react.PropTypes.string,
-	  rated: _react.PropTypes.number
+	  rated: _react.PropTypes.number,
+	  category: _react.PropTypes.string
 	};
 	
 	MapMaker.defaultProps = {};
@@ -27249,8 +27301,7 @@
 	exports.mapMakerStyleHover = mapMakerStyleHover;
 
 /***/ },
-/* 230 */,
-/* 231 */
+/* 230 */
 /*!********************************!*\
   !*** ./src/js/action/index.js ***!
   \********************************/
@@ -27263,7 +27314,7 @@
 	});
 	exports.getServiceLoc = exports.changePOILocation = exports.addServiceLoc = undefined;
 	
-	var _axios = __webpack_require__(/*! axios */ 232);
+	var _axios = __webpack_require__(/*! axios */ 231);
 	
 	var _axios2 = _interopRequireDefault(_axios);
 	
@@ -27271,7 +27322,7 @@
 	
 	var API_URL = 'http://localhost:3000/api';
 	
-	var ClientConfig = __webpack_require__(/*! ClientConfig */ 257);
+	var ClientConfig = __webpack_require__(/*! ClientConfig */ 256);
 	
 	var addServiceLoc = exports.addServiceLoc = function addServiceLoc(text) {
 	  return {
@@ -27339,16 +27390,16 @@
 	};
 
 /***/ },
-/* 232 */
+/* 231 */
 /*!**************************!*\
   !*** ./~/axios/index.js ***!
   \**************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! ./lib/axios */ 233);
+	module.exports = __webpack_require__(/*! ./lib/axios */ 232);
 
 /***/ },
-/* 233 */
+/* 232 */
 /*!******************************!*\
   !*** ./~/axios/lib/axios.js ***!
   \******************************/
@@ -27356,10 +27407,10 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 234);
-	var bind = __webpack_require__(/*! ./helpers/bind */ 235);
-	var Axios = __webpack_require__(/*! ./core/Axios */ 236);
-	var defaults = __webpack_require__(/*! ./defaults */ 237);
+	var utils = __webpack_require__(/*! ./utils */ 233);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 234);
+	var Axios = __webpack_require__(/*! ./core/Axios */ 235);
+	var defaults = __webpack_require__(/*! ./defaults */ 236);
 	
 	/**
 	 * Create an instance of Axios
@@ -27392,15 +27443,15 @@
 	};
 	
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 254);
-	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 255);
-	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 251);
+	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 253);
+	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 254);
+	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 250);
 	
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(/*! ./helpers/spread */ 256);
+	axios.spread = __webpack_require__(/*! ./helpers/spread */ 255);
 	
 	module.exports = axios;
 	
@@ -27409,7 +27460,7 @@
 
 
 /***/ },
-/* 234 */
+/* 233 */
 /*!******************************!*\
   !*** ./~/axios/lib/utils.js ***!
   \******************************/
@@ -27417,7 +27468,7 @@
 
 	'use strict';
 	
-	var bind = __webpack_require__(/*! ./helpers/bind */ 235);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 234);
 	
 	/*global toString:true*/
 	
@@ -27717,7 +27768,7 @@
 
 
 /***/ },
-/* 235 */
+/* 234 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/bind.js ***!
   \*************************************/
@@ -27737,7 +27788,7 @@
 
 
 /***/ },
-/* 236 */
+/* 235 */
 /*!***********************************!*\
   !*** ./~/axios/lib/core/Axios.js ***!
   \***********************************/
@@ -27745,12 +27796,12 @@
 
 	'use strict';
 	
-	var defaults = __webpack_require__(/*! ./../defaults */ 237);
-	var utils = __webpack_require__(/*! ./../utils */ 234);
-	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 248);
-	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 249);
-	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 252);
-	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 253);
+	var defaults = __webpack_require__(/*! ./../defaults */ 236);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
+	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 247);
+	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 248);
+	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 251);
+	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 252);
 	
 	/**
 	 * Create a new instance of Axios
@@ -27831,7 +27882,7 @@
 
 
 /***/ },
-/* 237 */
+/* 236 */
 /*!*********************************!*\
   !*** ./~/axios/lib/defaults.js ***!
   \*********************************/
@@ -27839,8 +27890,8 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./utils */ 234);
-	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 238);
+	var utils = __webpack_require__(/*! ./utils */ 233);
+	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 237);
 	
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -27857,10 +27908,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(/*! ./adapters/xhr */ 239);
+	    adapter = __webpack_require__(/*! ./adapters/xhr */ 238);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(/*! ./adapters/http */ 239);
+	    adapter = __webpack_require__(/*! ./adapters/http */ 238);
 	  }
 	  return adapter;
 	}
@@ -27934,7 +27985,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ },
-/* 238 */
+/* 237 */
 /*!****************************************************!*\
   !*** ./~/axios/lib/helpers/normalizeHeaderName.js ***!
   \****************************************************/
@@ -27942,7 +27993,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ../utils */ 234);
+	var utils = __webpack_require__(/*! ../utils */ 233);
 	
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -27955,7 +28006,7 @@
 
 
 /***/ },
-/* 239 */
+/* 238 */
 /*!*************************************!*\
   !*** ./~/axios/lib/adapters/xhr.js ***!
   \*************************************/
@@ -27963,13 +28014,13 @@
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
-	var settle = __webpack_require__(/*! ./../core/settle */ 240);
-	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 243);
-	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 244);
-	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 245);
-	var createError = __webpack_require__(/*! ../core/createError */ 241);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 246);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
+	var settle = __webpack_require__(/*! ./../core/settle */ 239);
+	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 242);
+	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 243);
+	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 244);
+	var createError = __webpack_require__(/*! ../core/createError */ 240);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 245);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -28065,7 +28116,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 247);
+	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 246);
 	
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -28142,7 +28193,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ },
-/* 240 */
+/* 239 */
 /*!************************************!*\
   !*** ./~/axios/lib/core/settle.js ***!
   \************************************/
@@ -28150,7 +28201,7 @@
 
 	'use strict';
 	
-	var createError = __webpack_require__(/*! ./createError */ 241);
+	var createError = __webpack_require__(/*! ./createError */ 240);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -28176,7 +28227,7 @@
 
 
 /***/ },
-/* 241 */
+/* 240 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/core/createError.js ***!
   \*****************************************/
@@ -28184,7 +28235,7 @@
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(/*! ./enhanceError */ 242);
+	var enhanceError = __webpack_require__(/*! ./enhanceError */ 241);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -28202,7 +28253,7 @@
 
 
 /***/ },
-/* 242 */
+/* 241 */
 /*!******************************************!*\
   !*** ./~/axios/lib/core/enhanceError.js ***!
   \******************************************/
@@ -28230,7 +28281,7 @@
 
 
 /***/ },
-/* 243 */
+/* 242 */
 /*!*****************************************!*\
   !*** ./~/axios/lib/helpers/buildURL.js ***!
   \*****************************************/
@@ -28238,7 +28289,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -28307,7 +28358,7 @@
 
 
 /***/ },
-/* 244 */
+/* 243 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/helpers/parseHeaders.js ***!
   \*********************************************/
@@ -28315,7 +28366,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
 	
 	/**
 	 * Parse headers into an object
@@ -28353,7 +28404,7 @@
 
 
 /***/ },
-/* 245 */
+/* 244 */
 /*!************************************************!*\
   !*** ./~/axios/lib/helpers/isURLSameOrigin.js ***!
   \************************************************/
@@ -28361,7 +28412,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -28430,7 +28481,7 @@
 
 
 /***/ },
-/* 246 */
+/* 245 */
 /*!*************************************!*\
   !*** ./~/axios/lib/helpers/btoa.js ***!
   \*************************************/
@@ -28475,7 +28526,7 @@
 
 
 /***/ },
-/* 247 */
+/* 246 */
 /*!****************************************!*\
   !*** ./~/axios/lib/helpers/cookies.js ***!
   \****************************************/
@@ -28483,7 +28534,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -28537,7 +28588,7 @@
 
 
 /***/ },
-/* 248 */
+/* 247 */
 /*!************************************************!*\
   !*** ./~/axios/lib/core/InterceptorManager.js ***!
   \************************************************/
@@ -28545,7 +28596,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -28598,7 +28649,7 @@
 
 
 /***/ },
-/* 249 */
+/* 248 */
 /*!*********************************************!*\
   !*** ./~/axios/lib/core/dispatchRequest.js ***!
   \*********************************************/
@@ -28606,10 +28657,10 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
-	var transformData = __webpack_require__(/*! ./transformData */ 250);
-	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 251);
-	var defaults = __webpack_require__(/*! ../defaults */ 237);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
+	var transformData = __webpack_require__(/*! ./transformData */ 249);
+	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 250);
+	var defaults = __webpack_require__(/*! ../defaults */ 236);
 	
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -28686,7 +28737,7 @@
 
 
 /***/ },
-/* 250 */
+/* 249 */
 /*!*******************************************!*\
   !*** ./~/axios/lib/core/transformData.js ***!
   \*******************************************/
@@ -28694,7 +28745,7 @@
 
 	'use strict';
 	
-	var utils = __webpack_require__(/*! ./../utils */ 234);
+	var utils = __webpack_require__(/*! ./../utils */ 233);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -28715,7 +28766,7 @@
 
 
 /***/ },
-/* 251 */
+/* 250 */
 /*!****************************************!*\
   !*** ./~/axios/lib/cancel/isCancel.js ***!
   \****************************************/
@@ -28729,7 +28780,7 @@
 
 
 /***/ },
-/* 252 */
+/* 251 */
 /*!**********************************************!*\
   !*** ./~/axios/lib/helpers/isAbsoluteURL.js ***!
   \**********************************************/
@@ -28752,7 +28803,7 @@
 
 
 /***/ },
-/* 253 */
+/* 252 */
 /*!********************************************!*\
   !*** ./~/axios/lib/helpers/combineURLs.js ***!
   \********************************************/
@@ -28773,7 +28824,7 @@
 
 
 /***/ },
-/* 254 */
+/* 253 */
 /*!**************************************!*\
   !*** ./~/axios/lib/cancel/Cancel.js ***!
   \**************************************/
@@ -28801,7 +28852,7 @@
 
 
 /***/ },
-/* 255 */
+/* 254 */
 /*!*******************************************!*\
   !*** ./~/axios/lib/cancel/CancelToken.js ***!
   \*******************************************/
@@ -28809,7 +28860,7 @@
 
 	'use strict';
 	
-	var Cancel = __webpack_require__(/*! ./Cancel */ 254);
+	var Cancel = __webpack_require__(/*! ./Cancel */ 253);
 	
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -28867,7 +28918,7 @@
 
 
 /***/ },
-/* 256 */
+/* 255 */
 /*!***************************************!*\
   !*** ./~/axios/lib/helpers/spread.js ***!
   \***************************************/
@@ -28903,7 +28954,7 @@
 
 
 /***/ },
-/* 257 */
+/* 256 */
 /*!*****************************************************************************!*\
   !*** external "{\"apiURL\":\"http://localhost:3000/api\",\"env\":\"dev\"}" ***!
   \*****************************************************************************/
@@ -28912,7 +28963,157 @@
 	module.exports = {"apiURL":"http://localhost:3000/api","env":"dev"};
 
 /***/ },
+/* 257 */
+/*!*******************************************!*\
+  !*** ./src/js/containers/POIContainer.js ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.POIContainer = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _POIPanel = __webpack_require__(/*! ../components/POIPanel */ 258);
+	
+	var _POIPanel2 = _interopRequireDefault(_POIPanel);
+	
+	var _reactRedux = __webpack_require__(/*! react-redux */ 172);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var POIContainer = exports.POIContainer = function (_Component) {
+	  _inherits(POIContainer, _Component);
+	
+	  function POIContainer(props, context) {
+	    _classCallCheck(this, POIContainer);
+	
+	    return _possibleConstructorReturn(this, (POIContainer.__proto__ || Object.getPrototypeOf(POIContainer)).call(this, props, context));
+	  }
+	
+	  _createClass(POIContainer, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(_POIPanel2.default, { poiLocation: this.props.poiLocation,
+	          height: '15%' })
+	      );
+	    }
+	  }]);
+	
+	  return POIContainer;
+	}(_react.Component);
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    poiLocation: state.poiLocation
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(POIContainer);
+
+/***/ },
 /* 258 */
+/*!***************************************!*\
+  !*** ./src/js/components/POIPanel.js ***!
+  \***************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var POIPanel = function (_Component) {
+	  _inherits(POIPanel, _Component);
+	
+	  function POIPanel(props, context) {
+	    _classCallCheck(this, POIPanel);
+	
+	    return _possibleConstructorReturn(this, (POIPanel.__proto__ || Object.getPrototypeOf(POIPanel)).call(this, props, context));
+	  }
+	
+	  _createClass(POIPanel, [{
+	    key: 'render',
+	    value: function render() {
+	      console.log(this.props.poiLocation);
+	      return _react2.default.createElement(
+	        'div',
+	        { style: { height: this.props.height } },
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', width: '30%' } },
+	          _react2.default.createElement('img', { src: '../img/photo-album-icon-png-14.png', height: '100%' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { float: 'left', paddingTop: '10px' } },
+	          _react2.default.createElement(
+	            'span',
+	            { style: { fontWeight: 'bold' } },
+	            this.props.poiLocation.title
+	          ),
+	          _react2.default.createElement('br', null),
+	          this.props.poiLocation.rated
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return POIPanel;
+	}(_react.Component);
+	
+	POIPanel.propTypes = {
+	  center: _react.PropTypes.array,
+	  zoom: _react.PropTypes.number,
+	  poiLocation: _react.PropTypes.any,
+	  height: _react.PropTypes.any
+	};
+	
+	POIPanel.defaultProps = {
+	  center: { lat: 13.733313, lng: 100.566274 },
+	  zoom: 15,
+	  poiLocation: 'Test'
+	};
+	
+	exports.default = POIPanel;
+
+/***/ },
+/* 259 */
 /*!**********************************!*\
   !*** ./src/js/reducers/index.js ***!
   \**********************************/
@@ -28926,11 +29127,11 @@
 	
 	var _redux = __webpack_require__(/*! redux */ 179);
 	
-	var _locations = __webpack_require__(/*! ./locations */ 259);
+	var _locations = __webpack_require__(/*! ./locations */ 260);
 	
 	var _locations2 = _interopRequireDefault(_locations);
 	
-	var _poiLocation = __webpack_require__(/*! ./poiLocation */ 276);
+	var _poiLocation = __webpack_require__(/*! ./poiLocation */ 261);
 	
 	var _poiLocation2 = _interopRequireDefault(_poiLocation);
 	
@@ -28944,7 +29145,7 @@
 	exports.default = mapApp;
 
 /***/ },
-/* 259 */
+/* 260 */
 /*!**************************************!*\
   !*** ./src/js/reducers/locations.js ***!
   \**************************************/
@@ -28977,7 +29178,33 @@
 	exports.default = locations;
 
 /***/ },
-/* 260 */
+/* 261 */
+/*!****************************************!*\
+  !*** ./src/js/reducers/poiLocation.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var poiLocation = function poiLocation() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'CHANGE_POI_LOC':
+	      return action.payload;
+	    default:
+	      return state;
+	  }
+	};
+	
+	exports.default = poiLocation;
+
+/***/ },
+/* 262 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/
@@ -29008,7 +29235,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 261 */
+/* 263 */
 /*!**************************************!*\
   !*** ./~/redux-promise/lib/index.js ***!
   \**************************************/
@@ -29022,7 +29249,7 @@
 	
 	exports['default'] = promiseMiddleware;
 	
-	var _fluxStandardAction = __webpack_require__(/*! flux-standard-action */ 262);
+	var _fluxStandardAction = __webpack_require__(/*! flux-standard-action */ 264);
 	
 	function isPromise(val) {
 	  return val && typeof val.then === 'function';
@@ -29049,7 +29276,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 262 */
+/* 264 */
 /*!*********************************************!*\
   !*** ./~/flux-standard-action/lib/index.js ***!
   \*********************************************/
@@ -29063,7 +29290,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _lodashIsplainobject = __webpack_require__(/*! lodash.isplainobject */ 263);
+	var _lodashIsplainobject = __webpack_require__(/*! lodash.isplainobject */ 265);
 	
 	var _lodashIsplainobject2 = _interopRequireDefault(_lodashIsplainobject);
 	
@@ -29082,7 +29309,7 @@
 	}
 
 /***/ },
-/* 263 */
+/* 265 */
 /*!*****************************************!*\
   !*** ./~/lodash.isplainobject/index.js ***!
   \*****************************************/
@@ -29096,9 +29323,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(/*! lodash._basefor */ 264),
-	    isArguments = __webpack_require__(/*! lodash.isarguments */ 265),
-	    keysIn = __webpack_require__(/*! lodash.keysin */ 266);
+	var baseFor = __webpack_require__(/*! lodash._basefor */ 266),
+	    isArguments = __webpack_require__(/*! lodash.isarguments */ 267),
+	    keysIn = __webpack_require__(/*! lodash.keysin */ 268);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -29194,7 +29421,7 @@
 
 
 /***/ },
-/* 264 */
+/* 266 */
 /*!************************************!*\
   !*** ./~/lodash._basefor/index.js ***!
   \************************************/
@@ -29251,7 +29478,7 @@
 
 
 /***/ },
-/* 265 */
+/* 267 */
 /*!***************************************!*\
   !*** ./~/lodash.isarguments/index.js ***!
   \***************************************/
@@ -29489,7 +29716,7 @@
 
 
 /***/ },
-/* 266 */
+/* 268 */
 /*!**********************************!*\
   !*** ./~/lodash.keysin/index.js ***!
   \**********************************/
@@ -29503,8 +29730,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArguments = __webpack_require__(/*! lodash.isarguments */ 265),
-	    isArray = __webpack_require__(/*! lodash.isarray */ 267);
+	var isArguments = __webpack_require__(/*! lodash.isarguments */ 267),
+	    isArray = __webpack_require__(/*! lodash.isarray */ 269);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -29630,7 +29857,7 @@
 
 
 /***/ },
-/* 267 */
+/* 269 */
 /*!***********************************!*\
   !*** ./~/lodash.isarray/index.js ***!
   \***********************************/
@@ -29819,7 +30046,7 @@
 
 
 /***/ },
-/* 268 */
+/* 270 */
 /*!*************************************!*\
   !*** ./~/redux-logger/lib/index.js ***!
   \*************************************/
@@ -29833,11 +30060,11 @@
 	  value: true
 	});
 	
-	var _core = __webpack_require__(/*! ./core */ 269);
+	var _core = __webpack_require__(/*! ./core */ 271);
 	
-	var _helpers = __webpack_require__(/*! ./helpers */ 270);
+	var _helpers = __webpack_require__(/*! ./helpers */ 272);
 	
-	var _defaults = __webpack_require__(/*! ./defaults */ 273);
+	var _defaults = __webpack_require__(/*! ./defaults */ 275);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
@@ -29940,7 +30167,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 269 */
+/* 271 */
 /*!************************************!*\
   !*** ./~/redux-logger/lib/core.js ***!
   \************************************/
@@ -29953,9 +30180,9 @@
 	});
 	exports.printBuffer = printBuffer;
 	
-	var _helpers = __webpack_require__(/*! ./helpers */ 270);
+	var _helpers = __webpack_require__(/*! ./helpers */ 272);
 	
-	var _diff = __webpack_require__(/*! ./diff */ 271);
+	var _diff = __webpack_require__(/*! ./diff */ 273);
 	
 	var _diff2 = _interopRequireDefault(_diff);
 	
@@ -30084,7 +30311,7 @@
 	}
 
 /***/ },
-/* 270 */
+/* 272 */
 /*!***************************************!*\
   !*** ./~/redux-logger/lib/helpers.js ***!
   \***************************************/
@@ -30111,7 +30338,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 271 */
+/* 273 */
 /*!************************************!*\
   !*** ./~/redux-logger/lib/diff.js ***!
   \************************************/
@@ -30124,7 +30351,7 @@
 	});
 	exports.default = diffLogger;
 	
-	var _deepDiff = __webpack_require__(/*! deep-diff */ 272);
+	var _deepDiff = __webpack_require__(/*! deep-diff */ 274);
 	
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 	
@@ -30210,7 +30437,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 272 */
+/* 274 */
 /*!******************************!*\
   !*** ./~/deep-diff/index.js ***!
   \******************************/
@@ -30642,7 +30869,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 273 */
+/* 275 */
 /*!****************************************!*\
   !*** ./~/redux-logger/lib/defaults.js ***!
   \****************************************/
@@ -30694,182 +30921,6 @@
 	  transformer: undefined
 	};
 	module.exports = exports['default'];
-
-/***/ },
-/* 274 */
-/*!*******************************************!*\
-  !*** ./src/js/containers/POIContainer.js ***!
-  \*******************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.POIContainer = undefined;
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _POIPanel = __webpack_require__(/*! ../components/POIPanel */ 275);
-	
-	var _POIPanel2 = _interopRequireDefault(_POIPanel);
-	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 172);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var POIContainer = exports.POIContainer = function (_Component) {
-	  _inherits(POIContainer, _Component);
-	
-	  function POIContainer(props, context) {
-	    _classCallCheck(this, POIContainer);
-	
-	    return _possibleConstructorReturn(this, (POIContainer.__proto__ || Object.getPrototypeOf(POIContainer)).call(this, props, context));
-	  }
-	
-	  _createClass(POIContainer, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(_POIPanel2.default, { poiLocation: this.props.poiLocation,
-	          height: '15%' })
-	      );
-	    }
-	  }]);
-	
-	  return POIContainer;
-	}(_react.Component);
-	
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    poiLocation: state.poiLocation
-	  };
-	};
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(POIContainer);
-
-/***/ },
-/* 275 */
-/*!***************************************!*\
-  !*** ./src/js/components/POIPanel.js ***!
-  \***************************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var POIPanel = function (_Component) {
-	  _inherits(POIPanel, _Component);
-	
-	  function POIPanel(props, context) {
-	    _classCallCheck(this, POIPanel);
-	
-	    return _possibleConstructorReturn(this, (POIPanel.__proto__ || Object.getPrototypeOf(POIPanel)).call(this, props, context));
-	  }
-	
-	  _createClass(POIPanel, [{
-	    key: 'render',
-	    value: function render() {
-	      console.log(this.props.poiLocation);
-	      return _react2.default.createElement(
-	        'div',
-	        { style: { height: this.props.height } },
-	        _react2.default.createElement(
-	          'div',
-	          { style: { float: 'left', width: '30%' } },
-	          _react2.default.createElement('img', { src: '../img/photo-album-icon-png-14.png', height: '100%' })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { style: { float: 'left', paddingTop: '10px' } },
-	          _react2.default.createElement(
-	            'span',
-	            { style: { fontWeight: 'bold' } },
-	            this.props.poiLocation.title
-	          ),
-	          _react2.default.createElement('br', null),
-	          this.props.poiLocation.rated
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return POIPanel;
-	}(_react.Component);
-	
-	POIPanel.propTypes = {
-	  center: _react.PropTypes.array,
-	  zoom: _react.PropTypes.number,
-	  poiLocation: _react.PropTypes.any,
-	  height: _react.PropTypes.any
-	};
-	
-	POIPanel.defaultProps = {
-	  center: { lat: 13.733313, lng: 100.566274 },
-	  zoom: 15,
-	  poiLocation: 'Test'
-	};
-	
-	exports.default = POIPanel;
-
-/***/ },
-/* 276 */
-/*!****************************************!*\
-  !*** ./src/js/reducers/poiLocation.js ***!
-  \****************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var poiLocation = function poiLocation() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case 'CHANGE_POI_LOC':
-	      return action.payload;
-	    default:
-	      return state;
-	  }
-	};
-	
-	exports.default = poiLocation;
 
 /***/ }
 /******/ ]);
