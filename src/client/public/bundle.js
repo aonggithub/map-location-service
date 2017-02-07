@@ -23928,7 +23928,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
-	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
+	          apiKeyParam: '',
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          center: this.state.initialPosition
