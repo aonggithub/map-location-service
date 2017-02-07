@@ -22,7 +22,7 @@ class MapMaker extends Component {
        <div style={style}
             onClick={() => {this.props.poiOnClick(this.props) }}>
           <span className={categoryIcon}></span>
-          <img src={img} style={{width: '50px'}}/>
+          { img ? <img src={img} style={{width: '50px'}}/> : ''}
        </div>
     );
   }

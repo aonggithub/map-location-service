@@ -27237,7 +27237,7 @@
 	            _this2.props.poiOnClick(_this2.props);
 	          } },
 	        _react2.default.createElement('span', { className: categoryIcon }),
-	        _react2.default.createElement('img', { src: img, style: { width: '50px' } })
+	        img ? _react2.default.createElement('img', { src: img, style: { width: '50px' } }) : ''
 	      );
 	    }
 	  }]);
