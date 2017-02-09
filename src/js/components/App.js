@@ -4,7 +4,7 @@ import POIContainer from '../containers/POIContainer'
 
 const App = () => (
   <div>
-    Google map
+    <div style={{textAlign: 'center'}}>Google map</div>
     <MapContainer />
     <POIContainer />
   </div>

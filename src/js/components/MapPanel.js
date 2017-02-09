@@ -1,6 +1,7 @@
 import React, {PropTypes, Component } from 'react';
 import GoogleMap, {GoogleMapMarkers} from 'google-map-react';
 import MapMaker from './MapMaker';
+import MenuButton from './MenuButton';
 
 class MapPanel extends Component {
   constructor (props, context) {
@@ -25,8 +26,8 @@ class MapPanel extends Component {
       let currentLocation = <MapMaker
             lat={this.props.center.lat}
             lng={this.props.center.lng}
-            title= "xxx"
-            rated= "xxx"
+            title= "currentLocation"
+            rated= "0"
             category= "0"
             />
 
@@ -55,6 +56,7 @@ class MapPanel extends Component {
           >
           {servicePlaces}
         </GoogleMap>
+        <MenuButton />
       </div>
     )
   }
@@ -71,7 +73,7 @@ MapPanel.propTypes = {
 
 MapPanel.defaultProps = {
   center: {lat: 13.675960412398283, lng: 100.66582988631592},
-  zoom: 15,
+  zoom: 14,
   serviceLocations: [{id: 'A', lat: 13.733313, lng: 100.566274}],
   height: '100%'
 };

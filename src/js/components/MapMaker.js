@@ -11,7 +11,6 @@ class MapMaker extends Component {
     let makerStyle = {};
     makerStyle.style = this.props.$hover ? mapMakerStyle : mapMakerStyleHover;
     makerStyle.categoryIcon = "glyphicon glyphicon-home";
-
     makerStyle.img = "";
 
     this.setStyleByCategory(this.props.category, makerStyle);
