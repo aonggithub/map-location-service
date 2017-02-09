@@ -8,23 +8,44 @@ class MapMaker extends Component {
   }
 
   render() {
-    let style = this.props.$hover ? mapMakerStyle : mapMakerStyleHover;
-    let categoryIcon = "glyphicon glyphicon-home";
-    let img = "";
+    let makerStyle = {};
+    makerStyle.style = this.props.$hover ? mapMakerStyle : mapMakerStyleHover;
+    makerStyle.categoryIcon = "glyphicon glyphicon-home";
+
+    makerStyle.img = "";
+
+    this.setStyleByCategory(this.props.category, makerStyle);
+
     if(this.props.category == "0"){
-      // If category is 0, that means current location
-      style = {};
-      categoryIcon = ""
-      img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png"
-      //categoryIcon = "glyphicon glyphicon-map-marker";
+      makerStyle.img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png"
     }
+
     return (
-       <div style={style}
+       <div style={makerStyle.style}
             onClick={() => {this.props.poiOnClick(this.props) }}>
-          <span className={categoryIcon}></span>
-          { img ? <img src={img} style={{width: '50px'}}/> : ''}
+          <span className={makerStyle.categoryIcon}></span>
+          { makerStyle.img ? <img src={makerStyle.img} style={{width: '50px'}}/> : ''}
        </div>
     );
+  }
+
+  setStyleByCategory(category, makerStyle) {
+    if(category == "0"){
+      // If category is 0, that means current location
+      makerStyle.style = {};
+      makerStyle.categoryIcon = ""
+    } else if (category == "cat1") {
+      makerStyle.style.backgroundColor = '#1164ec';
+      makerStyle.style.border = '2px solid #1164ec';
+    } else if (category == "cat2") {
+      makerStyle.style.backgroundColor = '#DC143C';
+      makerStyle.style.border = '2px solid #DC143C'
+      makerStyle.categoryIcon = "glyphicon glyphicon-glass";
+    } else if (category == "cat3") {
+      makerStyle.style.backgroundColor = '#1AAC5B';
+      makerStyle.style.border = '2px solid #1AAC5B'
+      makerStyle.categoryIcon = "glyphicon glyphicon-music";
+    }
   }
 }
 

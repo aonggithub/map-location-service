@@ -1,5 +1,5 @@
-const K_WIDTH = 30;
-const K_HEIGHT = 30;
+const K_WIDTH = 26;
+const K_HEIGHT = 26;
 
 let mapMakerStyle = {
   // initially any map object has left top corner at lat lng coordinates
@@ -10,21 +10,22 @@ let mapMakerStyle = {
   left: -K_WIDTH / 2,
   top: -K_HEIGHT / 2,
 
-  border: '2px solid #f44336',
+  border: '2px solid #ffffff',
   borderRadius: K_HEIGHT,
   backgroundColor: 'white',
   textAlign: 'center',
-  color: '#3f51b5',
+  color: '#ffffff',
   //fontSize: 16,
   fontSize: 10,
   fontWeight: 'bold',
-  padding: 4,
-  boxSizing: 'border-box'
+  padding: '6px 4px 4px 4px',
+  boxSizing: 'border-box',
+  cursor: 'pointer'
 };
 
 let mapMakerStyleHover = Object.assign({}, mapMakerStyle);
-mapMakerStyleHover.border = '2px solid #1164ec';
-mapMakerStyleHover.color= '#1164ec';
+mapMakerStyleHover.border='2px solid #ffffff';
+mapMakerStyleHover.color= '#ffffff';
 
 
 

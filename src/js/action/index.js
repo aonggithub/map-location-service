@@ -31,7 +31,8 @@ export const getServiceLoc = () => {
               title: 'RSU Tower',
               lat:'13.733313',
               lng:'100.566274',
-              rated:5
+              rated:5,
+              category: 'cat1'
            },
            {
              _id: "5860928f360fbe6728fd2e55",
@@ -39,7 +40,8 @@ export const getServiceLoc = () => {
               title: 'Samitivej Sukhumvit Hospital',
               lat:'13.736627208213747',
               lng:'100.57329065878298',
-              rated:5
+              rated:5,
+              category: 'cat2'
            },
            {
              _id: "5860928f360fbe6728fd2e56",
@@ -47,7 +49,17 @@ export const getServiceLoc = () => {
               title: 'Benjakitti Park',
               lat:'13.731270257133573',
               lng:'100.5572832353821',
-              rated:5
+              rated:5,
+              category: 'cat3'
+           },
+           {
+             _id: "5860929f360fbe6728fd2e59",
+              name:'D',
+              title: 'Ban Kluai Tai Alley',
+              lat:'13.721240760977764',
+              lng:'100.57965587508545',
+              rated:5,
+              category: 'cat3'
            }
         ];
 

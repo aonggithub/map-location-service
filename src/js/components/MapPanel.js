@@ -17,6 +17,7 @@ class MapPanel extends Component {
                       title= {place.title}
                       rated= {place.rated}
                       poiOnClick={this.props.poiOnClick}
+                      category={place.category}
                       />
                   }, this);
 

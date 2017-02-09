@@ -23928,7 +23928,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
-	          apiKeyParam: '',
+	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          center: this.state.initialPosition
@@ -24016,7 +24016,8 @@
 	          lng: place.lng,
 	          title: place.title,
 	          rated: place.rated,
-	          poiOnClick: _this2.props.poiOnClick
+	          poiOnClick: _this2.props.poiOnClick,
+	          category: place.category
 	        });
 	      }, this);
 	
@@ -27220,25 +27221,47 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var style = this.props.$hover ? _MapMaker_styles.mapMakerStyle : _MapMaker_styles.mapMakerStyleHover;
-	      var categoryIcon = "glyphicon glyphicon-home";
-	      var img = "";
+	      var makerStyle = {};
+	      makerStyle.style = this.props.$hover ? _MapMaker_styles.mapMakerStyle : _MapMaker_styles.mapMakerStyleHover;
+	      makerStyle.categoryIcon = "glyphicon glyphicon-home";
+	
+	      makerStyle.img = "";
+	
+	      this.setStyleByCategory(this.props.category, makerStyle);
+	
 	      if (this.props.category == "0") {
-	        // If category is 0, that means current location
-	        style = {};
-	        categoryIcon = "";
-	        img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png";
-	        //categoryIcon = "glyphicon glyphicon-map-marker";
+	        makerStyle.img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png";
 	      }
+	
 	      return _react2.default.createElement(
 	        'div',
-	        { style: style,
+	        { style: makerStyle.style,
 	          onClick: function onClick() {
 	            _this2.props.poiOnClick(_this2.props);
 	          } },
-	        _react2.default.createElement('span', { className: categoryIcon }),
-	        img ? _react2.default.createElement('img', { src: img, style: { width: '50px' } }) : ''
+	        _react2.default.createElement('span', { className: makerStyle.categoryIcon }),
+	        makerStyle.img ? _react2.default.createElement('img', { src: makerStyle.img, style: { width: '50px' } }) : ''
 	      );
+	    }
+	  }, {
+	    key: 'setStyleByCategory',
+	    value: function setStyleByCategory(category, makerStyle) {
+	      if (category == "0") {
+	        // If category is 0, that means current location
+	        makerStyle.style = {};
+	        makerStyle.categoryIcon = "";
+	      } else if (category == "cat1") {
+	        makerStyle.style.backgroundColor = '#1164ec';
+	        makerStyle.style.border = '2px solid #1164ec';
+	      } else if (category == "cat2") {
+	        makerStyle.style.backgroundColor = '#DC143C';
+	        makerStyle.style.border = '2px solid #DC143C';
+	        makerStyle.categoryIcon = "glyphicon glyphicon-glass";
+	      } else if (category == "cat3") {
+	        makerStyle.style.backgroundColor = '#1AAC5B';
+	        makerStyle.style.border = '2px solid #1AAC5B';
+	        makerStyle.categoryIcon = "glyphicon glyphicon-music";
+	      }
 	    }
 	  }]);
 	
@@ -27269,8 +27292,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var K_WIDTH = 30;
-	var K_HEIGHT = 30;
+	var K_WIDTH = 26;
+	var K_HEIGHT = 26;
 	
 	var mapMakerStyle = {
 	  // initially any map object has left top corner at lat lng coordinates
@@ -27281,21 +27304,22 @@
 	  left: -K_WIDTH / 2,
 	  top: -K_HEIGHT / 2,
 	
-	  border: '2px solid #f44336',
+	  border: '2px solid #ffffff',
 	  borderRadius: K_HEIGHT,
 	  backgroundColor: 'white',
 	  textAlign: 'center',
-	  color: '#3f51b5',
+	  color: '#ffffff',
 	  //fontSize: 16,
 	  fontSize: 10,
 	  fontWeight: 'bold',
-	  padding: 4,
-	  boxSizing: 'border-box'
+	  padding: '6px 4px 4px 4px',
+	  boxSizing: 'border-box',
+	  cursor: 'pointer'
 	};
 	
 	var mapMakerStyleHover = Object.assign({}, mapMakerStyle);
-	mapMakerStyleHover.border = '2px solid #1164ec';
-	mapMakerStyleHover.color = '#1164ec';
+	mapMakerStyleHover.border = '2px solid #ffffff';
+	mapMakerStyleHover.color = '#ffffff';
 	
 	exports.mapMakerStyle = mapMakerStyle;
 	exports.mapMakerStyleHover = mapMakerStyleHover;
@@ -27349,21 +27373,32 @@
 	        title: 'RSU Tower',
 	        lat: '13.733313',
 	        lng: '100.566274',
-	        rated: 5
+	        rated: 5,
+	        category: 'cat1'
 	      }, {
 	        _id: "5860928f360fbe6728fd2e55",
 	        name: 'B',
 	        title: 'Samitivej Sukhumvit Hospital',
 	        lat: '13.736627208213747',
 	        lng: '100.57329065878298',
-	        rated: 5
+	        rated: 5,
+	        category: 'cat2'
 	      }, {
 	        _id: "5860928f360fbe6728fd2e56",
 	        name: 'C',
 	        title: 'Benjakitti Park',
 	        lat: '13.731270257133573',
 	        lng: '100.5572832353821',
-	        rated: 5
+	        rated: 5,
+	        category: 'cat3'
+	      }, {
+	        _id: "5860929f360fbe6728fd2e59",
+	        name: 'D',
+	        title: 'Ban Kluai Tai Alley',
+	        lat: '13.721240760977764',
+	        lng: '100.57965587508545',
+	        rated: 5,
+	        category: 'cat3'
 	      }];
 	
 	      dispatch({
