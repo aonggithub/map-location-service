@@ -6,19 +6,22 @@ class POIPanel extends Component {
   }
 
   render() {
-    console.log(this.props.poiLocation);
     return (
-      <div style={{height: this.props.height}}>
-        <div style={{float: 'left', width: '30%'}}>
-            <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
-        </div>
-        <div style={{float: 'left', paddingTop: '10px'}}>
-          <span style={{fontWeight: 'bold'}}>
-            {this.props.poiLocation.title}
-          </span>
-          <br></br>
-          {this.props.poiLocation.rated}
-        </div>
+      <div>
+        {this.props.show?
+          <div style={{height: this.props.height}}>
+            <div style={{float: 'left', width: '30%'}}>
+                <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
+            </div>
+            <div style={{float: 'left', paddingTop: '10px'}}>
+              <span style={{fontWeight: 'bold'}}>
+                {this.props.poiLocation.title}
+              </span>
+              <br></br>
+              {this.props.poiLocation.rated}
+            </div>
+          </div>
+          :''}
       </div>
     )
   }
@@ -29,6 +32,7 @@ POIPanel.propTypes = {
   zoom: PropTypes.number,
   poiLocation: PropTypes.any,
   height: PropTypes.any,
+  show: PropTypes.boolean
 }
 
 POIPanel.defaultProps = {

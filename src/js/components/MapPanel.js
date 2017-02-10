@@ -19,6 +19,7 @@ class MapPanel extends Component {
                       rated= {place.rated}
                       poiOnClick={this.props.poiOnClick}
                       category={place.category}
+                      displayCategoryMenu={this.props.displayCategoryMenu}
                       />
                   }, this);
 
@@ -56,7 +57,7 @@ class MapPanel extends Component {
           >
           {servicePlaces}
         </GoogleMap>
-        <MenuButton />
+        <MenuButton displayCategoryMenu={this.props.displayCategoryMenu}/>
       </div>
     )
   }
@@ -68,7 +69,8 @@ MapPanel.propTypes = {
   serviceLocations: PropTypes.any,
   apiKeyParam: PropTypes.string,
   height: PropTypes.any,
-  poiOnClick: PropTypes.func
+  poiOnClick: PropTypes.func,
+  displayCategoryMenu: PropTypes.func
 }
 
 MapPanel.defaultProps = {

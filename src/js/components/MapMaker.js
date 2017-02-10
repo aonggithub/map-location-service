@@ -21,7 +21,10 @@ class MapMaker extends Component {
 
     return (
        <div style={makerStyle.style}
-            onClick={() => {this.props.poiOnClick(this.props) }}>
+            onClick={() => {
+              this.props.poiOnClick(this.props)
+              this.props.displayCategoryMenu(false);
+            }}>
           <span className={makerStyle.categoryIcon}></span>
           { makerStyle.img ? <img src={makerStyle.img} style={{width: '50px'}}/> : ''}
        </div>
@@ -53,7 +56,8 @@ MapMaker.propTypes = {
   poiOnClick: PropTypes.func,
   title: PropTypes.string,
   rated: PropTypes.number,
-  category: PropTypes.string
+  category: PropTypes.string,
+  displayCategoryMenu: PropTypes.func
 }
 
 MapMaker.defaultProps = {

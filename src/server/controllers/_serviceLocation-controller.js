@@ -6,8 +6,16 @@ exports.createServiceLocation = function(req, res, next){
 }
 
 exports.getServiceLocation = function(req, res, next){
-
   ServiceLocation.find({}, function(err, serviceLocations){
+    if(err) {return next(err);}
+    res.status(200).json({ message: "Thanks! Your request was displayed successfuly!"
+                        , data: serviceLocations})
+    next();
+  })
+}
+
+exports.getServiceLocationByCategory = function(req, res, next){
+  ServiceLocation.find({'category': req.query.categoryId}, function(err, serviceLocations){
     if(err) {return next(err);}
     res.status(200).json({ message: "Thanks! Your request was displayed successfuly!"
                         , data: serviceLocations})

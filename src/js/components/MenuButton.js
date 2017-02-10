@@ -20,7 +20,7 @@ class MenuButton extends Component {
     const buttonStyle = {
       marginRight: 20
     };
-
+    
     return (
       <div style={divButtonStyle}>
         <MuiThemeProvider>
@@ -28,6 +28,7 @@ class MenuButton extends Component {
             onClick={ e=> {
               e.preventDefault()
               console.log("FloatingActionButton click")
+              this.props.displayCategoryMenu(true);
             }}
             >
            <ActionSearch/>
@@ -40,7 +41,7 @@ class MenuButton extends Component {
 }
 
 MenuButton.propTypes = {
-
+  displayCategoryMenu: PropTypes.func
 }
 
 MenuButton.defaultProps = {

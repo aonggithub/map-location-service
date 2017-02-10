@@ -10,6 +10,7 @@ module.exports = function(app){
   apiRoutes.post('/saveTodo', _todoController.createTodo)
   apiRoutes.get('/getTodo', _todoController.getTodo)
   apiRoutes.get('/getServiceLocation', _serviceLocationController.getServiceLocation)
+  apiRoutes.get('/getServiceLocationByCategory', _serviceLocationController.getServiceLocationByCategory)
 
   app.use('/api', apiRoutes);
 }

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import MapPanel from '../components/MapPanel';
+import MenuPanel from '../components/MenuPanel';
 import { connect } from 'react-redux';
-import { getServiceLoc, changePOILocation } from '../action';
+import { getServiceLoc,
+        changePOILocation,
+        changeCategoryToDisplay,
+        displayCategoryMenu } from '../action';
 
 export class MapContainer extends Component {
   constructor (props, context) {
@@ -34,7 +38,13 @@ export class MapContainer extends Component {
           apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
           height = '80%'
           poiOnClick={this.props.changePOILocationDisplay}
+          displayCategoryMenu={this.props.displayCategoryMenu}
           center = {this.state.initialPosition}
+          />
+        <MenuPanel
+          getAllLocation={this.props.loadServiceLoc}
+          changeCategory={this.props.changeCategoryToDisplay}
+          show={this.props.displayCatMenu}
           />
       </div>
     )
@@ -43,7 +53,8 @@ export class MapContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    locations: state.locations
+    locations: state.locations,
+    displayCatMenu: state.displayLayout.displayCatMenu
   }
 }
 
@@ -54,6 +65,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     changePOILocationDisplay: (poiObj) => {
       dispatch(changePOILocation(poiObj))
+    },
+    displayCategoryMenu: (show) => {
+      dispatch(displayCategoryMenu(show))
+    },
+    changeCategoryToDisplay: (category) => {
+      dispatch(changeCategoryToDisplay(category))
     }
   }
 }
