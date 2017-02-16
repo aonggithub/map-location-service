@@ -3,6 +3,7 @@ import MapPanel from '../components/MapPanel';
 import MenuPanel from '../components/MenuPanel';
 import { connect } from 'react-redux';
 import { getServiceLoc,
+        getNearbyServiceLoc,
         changePOILocation,
         changeCategoryToDisplay,
         displayCategoryMenu } from '../action';
@@ -10,11 +11,11 @@ import { getServiceLoc,
 export class MapContainer extends Component {
   constructor (props, context) {
     super(props, context);
-    this.state = {initialPosition: null};
+    this.state = {currentLocation: null, radius: 0};
   }
 
   componentDidMount(){
-    this.props.loadServiceLoc();
+    // this.props.loadServiceLoc();
     this.initialCurrentPos();
   }
 
@@ -23,12 +24,21 @@ export class MapContainer extends Component {
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          var initialPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
-          this.setState({initialPosition});
+          // Radius as kilometer to display POI.
+          const radius = 2;
+          var currentLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
+          this.setState({currentLocation});
+          this.setState({radius});
+          this.props.loadNearbyServiceLoc(currentLocation, radius);
         });
     }else{
       console.log("Geolocation is not supported by this browser.")
     }
+  }
+
+  // This method is created for manual binding current location and radius
+  changeCategoryToDisplayBindingCurrentLocation(category){
+    this.props.changeCategoryToDisplay(category, this.state.currentLocation, this.state.radius)
   }
 
   render(){
@@ -39,11 +49,11 @@ export class MapContainer extends Component {
           height = '80%'
           poiOnClick={this.props.changePOILocationDisplay}
           displayCategoryMenu={this.props.displayCategoryMenu}
-          center = {this.state.initialPosition}
+          center = {this.state.currentLocation}
           />
         <MenuPanel
           getAllLocation={this.props.loadServiceLoc}
-          changeCategory={this.props.changeCategoryToDisplay}
+          changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
           show={this.props.displayCatMenu}
           />
       </div>
@@ -63,14 +73,17 @@ const mapDispatchToProps = (dispatch) => {
     loadServiceLoc: () => {
       dispatch(getServiceLoc())
     },
+    loadNearbyServiceLoc: (currentLocation, radius) => {
+      dispatch(getNearbyServiceLoc(currentLocation, radius))
+    },
     changePOILocationDisplay: (poiObj) => {
       dispatch(changePOILocation(poiObj))
     },
     displayCategoryMenu: (show) => {
       dispatch(displayCategoryMenu(show))
     },
-    changeCategoryToDisplay: (category) => {
-      dispatch(changeCategoryToDisplay(category))
+    changeCategoryToDisplay: (category, currentLocation, radius) => {
+      dispatch(changeCategoryToDisplay(category,currentLocation, radius))
     }
   }
 }

@@ -31,7 +31,8 @@ class MapPanel extends Component {
             rated= "0"
             category= "0"
             />
-
+          console.log("Current location");
+          console.log(currentLocation);
       servicePlaces.push(currentLocation);
     }
 

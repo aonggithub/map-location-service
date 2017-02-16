@@ -11,6 +11,7 @@ module.exports = function(app){
   apiRoutes.get('/getTodo', _todoController.getTodo)
   apiRoutes.get('/getServiceLocation', _serviceLocationController.getServiceLocation)
   apiRoutes.get('/getServiceLocationByCategory', _serviceLocationController.getServiceLocationByCategory)
+  apiRoutes.get('/getNearbyServiceLocation', _serviceLocationController.getNearbyServiceLocation)
 
   app.use('/api', apiRoutes);
 }

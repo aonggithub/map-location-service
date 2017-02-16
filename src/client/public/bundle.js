@@ -23904,14 +23904,14 @@
 	
 	    var _this = _possibleConstructorReturn(this, (MapContainer.__proto__ || Object.getPrototypeOf(MapContainer)).call(this, props, context));
 	
-	    _this.state = { initialPosition: null };
+	    _this.state = { currentLocation: null, radius: 0 };
 	    return _this;
 	  }
 	
 	  _createClass(MapContainer, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.props.loadServiceLoc();
+	      // this.props.loadServiceLoc();
 	      this.initialCurrentPos();
 	    }
 	  }, {
@@ -23922,12 +23922,24 @@
 	      // Initial Current position.
 	      if (navigator.geolocation) {
 	        navigator.geolocation.getCurrentPosition(function (position) {
-	          var initialPosition = { lat: position.coords.latitude, lng: position.coords.longitude };
-	          _this2.setState({ initialPosition: initialPosition });
+	          // Radius as kilometer to display POI.
+	          var radius = 2;
+	          var currentLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+	          _this2.setState({ currentLocation: currentLocation });
+	          _this2.setState({ radius: radius });
+	          _this2.props.loadNearbyServiceLoc(currentLocation, radius);
 	        });
 	      } else {
 	        console.log("Geolocation is not supported by this browser.");
 	      }
+	    }
+	
+	    // This method is created for manual binding current location and radius
+	
+	  }, {
+	    key: 'changeCategoryToDisplayBindingCurrentLocation',
+	    value: function changeCategoryToDisplayBindingCurrentLocation(category) {
+	      this.props.changeCategoryToDisplay(category, this.state.currentLocation, this.state.radius);
 	    }
 	  }, {
 	    key: 'render',
@@ -23940,11 +23952,11 @@
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayCategoryMenu: this.props.displayCategoryMenu,
-	          center: this.state.initialPosition
+	          center: this.state.currentLocation
 	        }),
 	        _react2.default.createElement(_MenuPanel2.default, {
 	          getAllLocation: this.props.loadServiceLoc,
-	          changeCategory: this.props.changeCategoryToDisplay,
+	          changeCategory: this.changeCategoryToDisplayBindingCurrentLocation.bind(this),
 	          show: this.props.displayCatMenu
 	        })
 	      );
@@ -23966,14 +23978,17 @@
 	    loadServiceLoc: function loadServiceLoc() {
 	      dispatch((0, _action.getServiceLoc)());
 	    },
+	    loadNearbyServiceLoc: function loadNearbyServiceLoc(currentLocation, radius) {
+	      dispatch((0, _action.getNearbyServiceLoc)(currentLocation, radius));
+	    },
 	    changePOILocationDisplay: function changePOILocationDisplay(poiObj) {
 	      dispatch((0, _action.changePOILocation)(poiObj));
 	    },
 	    displayCategoryMenu: function displayCategoryMenu(show) {
 	      dispatch((0, _action.displayCategoryMenu)(show));
 	    },
-	    changeCategoryToDisplay: function changeCategoryToDisplay(category) {
-	      dispatch((0, _action.changeCategoryToDisplay)(category));
+	    changeCategoryToDisplay: function changeCategoryToDisplay(category, currentLocation, radius) {
+	      dispatch((0, _action.changeCategoryToDisplay)(category, currentLocation, radius));
 	    }
 	  };
 	};
@@ -24055,7 +24070,8 @@
 	          rated: '0',
 	          category: '0'
 	        });
-	
+	        console.log("Current location");
+	        console.log(currentLocation);
 	        servicePlaces.push(currentLocation);
 	      }
 	
@@ -39251,7 +39267,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.changeCategoryToDisplay = exports.getServiceLoc = exports.changePOILocation = exports.displayCategoryMenu = exports.addServiceLoc = undefined;
+	exports.changeCategoryToDisplay = exports.getNearbyServiceLoc = exports.getServiceLoc = exports.changePOILocation = exports.displayCategoryMenu = exports.addServiceLoc = undefined;
 	
 	var _axios = __webpack_require__(/*! axios */ 426);
 	
@@ -39262,6 +39278,39 @@
 	var API_URL = 'http://localhost:3000/api';
 	
 	var ClientConfig = __webpack_require__(/*! ClientConfig */ 451);
+	var ConstantServiceLocations = [{
+	  _id: "5860928f360fbe6728fd2e54",
+	  name: 'A',
+	  title: 'RSU Tower',
+	  lat: '13.733313',
+	  lng: '100.566274',
+	  rated: 5,
+	  category: 'cat1'
+	}, {
+	  _id: "5860928f360fbe6728fd2e55",
+	  name: 'B',
+	  title: 'Samitivej Sukhumvit Hospital',
+	  lat: '13.736627208213747',
+	  lng: '100.57329065878298',
+	  rated: 5,
+	  category: 'cat2'
+	}, {
+	  _id: "5860928f360fbe6728fd2e56",
+	  name: 'C',
+	  title: 'Benjakitti Park',
+	  lat: '13.731270257133573',
+	  lng: '100.5572832353821',
+	  rated: 5,
+	  category: 'cat3'
+	}, {
+	  _id: "5860929f360fbe6728fd2e59",
+	  name: 'D',
+	  title: 'Ban Kluai Tai Alley',
+	  lat: '13.721240760977764',
+	  lng: '100.57965587508545',
+	  rated: 5,
+	  category: 'cat3'
+	}];
 	
 	var addServiceLoc = exports.addServiceLoc = function addServiceLoc(text) {
 	  return {
@@ -39289,39 +39338,7 @@
 	    // Setting fixed data
 	
 	    if (ClientConfig.env == 'prod') {
-	      var serviceLocations = [{
-	        _id: "5860928f360fbe6728fd2e54",
-	        name: 'A',
-	        title: 'RSU Tower',
-	        lat: '13.733313',
-	        lng: '100.566274',
-	        rated: 5,
-	        category: 'cat1'
-	      }, {
-	        _id: "5860928f360fbe6728fd2e55",
-	        name: 'B',
-	        title: 'Samitivej Sukhumvit Hospital',
-	        lat: '13.736627208213747',
-	        lng: '100.57329065878298',
-	        rated: 5,
-	        category: 'cat2'
-	      }, {
-	        _id: "5860928f360fbe6728fd2e56",
-	        name: 'C',
-	        title: 'Benjakitti Park',
-	        lat: '13.731270257133573',
-	        lng: '100.5572832353821',
-	        rated: 5,
-	        category: 'cat3'
-	      }, {
-	        _id: "5860929f360fbe6728fd2e59",
-	        name: 'D',
-	        title: 'Ban Kluai Tai Alley',
-	        lat: '13.721240760977764',
-	        lng: '100.57965587508545',
-	        rated: 5,
-	        category: 'cat3'
-	      }];
+	      var serviceLocations = ConstantServiceLocations;
 	
 	      dispatch({
 	        type: 'GET_SERVICE_LOC',
@@ -39329,7 +39346,6 @@
 	      });
 	    }
 	    // Ending Setting fixed data
-	
 	
 	    if (ClientConfig.env == 'dev') {
 	      // Get data from Server
@@ -39346,45 +39362,48 @@
 	  };
 	};
 	
-	var changeCategoryToDisplay = exports.changeCategoryToDisplay = function changeCategoryToDisplay(category) {
+	var getNearbyServiceLoc = exports.getNearbyServiceLoc = function getNearbyServiceLoc(currentLocation, radius) {
 	  return function (dispatch) {
 	    // Setting fixed data
 	
 	    if (ClientConfig.env == 'prod') {
-	      var serviceLocations = [{
-	        _id: "5860928f360fbe6728fd2e54",
-	        name: 'A',
-	        title: 'RSU Tower',
-	        lat: '13.733313',
-	        lng: '100.566274',
-	        rated: 5,
-	        category: 'cat1'
-	      }, {
-	        _id: "5860928f360fbe6728fd2e55",
-	        name: 'B',
-	        title: 'Samitivej Sukhumvit Hospital',
-	        lat: '13.736627208213747',
-	        lng: '100.57329065878298',
-	        rated: 5,
-	        category: 'cat2'
-	      }, {
-	        _id: "5860928f360fbe6728fd2e56",
-	        name: 'C',
-	        title: 'Benjakitti Park',
-	        lat: '13.731270257133573',
-	        lng: '100.5572832353821',
-	        rated: 5,
-	        category: 'cat3'
-	      }, {
-	        _id: "5860929f360fbe6728fd2e59",
-	        name: 'D',
-	        title: 'Ban Kluai Tai Alley',
-	        lat: '13.721240760977764',
-	        lng: '100.57965587508545',
-	        rated: 5,
-	        category: 'cat3'
-	      }];
+	      var serviceLocations = ConstantServiceLocations;
 	
+	      dispatch({
+	        type: 'GET_SERVICE_LOC',
+	        payload: serviceLocations
+	      });
+	    }
+	    // Ending Setting fixed data
+	
+	
+	    if (ClientConfig.env == 'dev') {
+	      // Get data from Server
+	      _axios2.default.get(API_URL + '/getNearbyServiceLocation', {
+	        params: {
+	          lng: currentLocation.lng,
+	          lat: currentLocation.lat,
+	          radius: radius
+	        }
+	      }).then(function (response) {
+	        var data = response.data.data;
+	
+	        dispatch({
+	          type: 'GET_SERVICE_LOC',
+	          payload: data
+	        });
+	      });
+	    }
+	    // Ending getting data from Server
+	  };
+	};
+	
+	var changeCategoryToDisplay = exports.changeCategoryToDisplay = function changeCategoryToDisplay(category, currentLocation, radius) {
+	  return function (dispatch) {
+	    // Setting fixed data
+	
+	    if (ClientConfig.env == 'prod') {
+	      var serviceLocations = ConstantServiceLocations;
 	      var filterServiceLocations = serviceLocations.filter(function (poi) {
 	        return poi.category == category;
 	      });
@@ -39401,7 +39420,10 @@
 	      // Get data from Server
 	      _axios2.default.get(API_URL + '/getServiceLocationByCategory', {
 	        params: {
-	          categoryId: category
+	          categoryId: category,
+	          lng: currentLocation.lng,
+	          lat: currentLocation.lat,
+	          radius: radius
 	        }
 	      }).then(function (response) {
 	        var data = response.data.data;
