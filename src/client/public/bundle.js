@@ -67,15 +67,15 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _reduxThunk = __webpack_require__(/*! redux-thunk */ 457);
+	var _reduxThunk = __webpack_require__(/*! redux-thunk */ 458);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxPromise = __webpack_require__(/*! redux-promise */ 458);
+	var _reduxPromise = __webpack_require__(/*! redux-promise */ 459);
 	
 	var _reduxPromise2 = _interopRequireDefault(_reduxPromise);
 	
-	var _reduxLogger = __webpack_require__(/*! redux-logger */ 465);
+	var _reduxLogger = __webpack_require__(/*! redux-logger */ 466);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
@@ -23928,6 +23928,9 @@
 	          _this2.setState({ currentLocation: currentLocation });
 	          _this2.setState({ radius: radius });
 	          _this2.props.loadNearbyServiceLoc(currentLocation, radius);
+	        }, function (error) {
+	          console.log(error);
+	          console.log("Geolocation is not enabled.");
 	        });
 	      } else {
 	        console.log("Geolocation is not supported by this browser.");
@@ -23952,7 +23955,8 @@
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayCategoryMenu: this.props.displayCategoryMenu,
-	          center: this.state.currentLocation
+	          center: this.state.currentLocation,
+	          show: this.state.currentLocation != null
 	        }),
 	        _react2.default.createElement(_MenuPanel2.default, {
 	          getAllLocation: this.props.loadServiceLoc,
@@ -24084,26 +24088,49 @@
 	        };
 	      };
 	
-	      console.log(servicePlaces);
+	      function handleClick(e) {
+	        e.preventDefault();
+	        location.reload();
+	      }
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { style: { height: this.props.height } },
-	        _react2.default.createElement(
-	          _googleMapReact2.default,
-	          {
-	            center: this.props.center,
-	            defaultZoom: this.props.zoom,
-	            onClick: function onClick(obj) {
-	              console.log(obj);
+	        this.props.show ? _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            _googleMapReact2.default,
+	            {
+	              center: this.props.center,
+	              defaultZoom: this.props.zoom,
+	              onClick: function onClick(obj) {
+	                console.log(obj);
+	              },
+	              onZoomAnimationStart: function onZoomAnimationStart(obj) {
+	                console.log("onZoomAnimationStart");
+	              },
+	              bootstrapURLKeys: { key: this.props.apiKeyParam },
+	              onGoogleApiLoaded: function onGoogleApiLoaded(_ref) {
+	                var map = _ref.map,
+	                    maps = _ref.maps;
+	                return console.log(map, maps);
+	              },
+	              yesIWantToUseGoogleMapApiInternals: true
 	            },
-	            onZoomAnimationStart: function onZoomAnimationStart(obj) {
-	              console.log("onZoomAnimationStart");
-	            },
-	            bootstrapURLKeys: { key: this.props.apiKeyParam }
-	          },
-	          servicePlaces
-	        ),
-	        _react2.default.createElement(_MenuButton2.default, { displayCategoryMenu: this.props.displayCategoryMenu })
+	            servicePlaces
+	          ),
+	          _react2.default.createElement(_MenuButton2.default, { displayCategoryMenu: this.props.displayCategoryMenu })
+	        ) : _react2.default.createElement(
+	          'div',
+	          null,
+	          'Yout GPS seems to be disabled, please enable it and click',
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: handleClick },
+	            'Refresh'
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -24118,7 +24145,8 @@
 	  apiKeyParam: _react.PropTypes.string,
 	  height: _react.PropTypes.any,
 	  poiOnClick: _react.PropTypes.func,
-	  displayCategoryMenu: _react.PropTypes.func
+	  displayCategoryMenu: _react.PropTypes.func,
+	  show: _react.PropTypes.boolean
 	};
 	
 	MapPanel.defaultProps = {
@@ -41190,7 +41218,7 @@
 	
 	var _poiLocation2 = _interopRequireDefault(_poiLocation);
 	
-	var _displayLayout = __webpack_require__(/*! ./displayLayout */ 471);
+	var _displayLayout = __webpack_require__(/*! ./displayLayout */ 457);
 	
 	var _displayLayout2 = _interopRequireDefault(_displayLayout);
 	
@@ -41265,6 +41293,32 @@
 
 /***/ },
 /* 457 */
+/*!******************************************!*\
+  !*** ./src/js/reducers/displayLayout.js ***!
+  \******************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var displayLayout = function displayLayout() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'DISPLAY_CATEGORY_MENU':
+	      return action.payload;
+	    default:
+	      return state;
+	  }
+	};
+	
+	exports.default = displayLayout;
+
+/***/ },
+/* 458 */
 /*!************************************!*\
   !*** ./~/redux-thunk/lib/index.js ***!
   \************************************/
@@ -41295,7 +41349,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 458 */
+/* 459 */
 /*!**************************************!*\
   !*** ./~/redux-promise/lib/index.js ***!
   \**************************************/
@@ -41309,7 +41363,7 @@
 	
 	exports['default'] = promiseMiddleware;
 	
-	var _fluxStandardAction = __webpack_require__(/*! flux-standard-action */ 459);
+	var _fluxStandardAction = __webpack_require__(/*! flux-standard-action */ 460);
 	
 	function isPromise(val) {
 	  return val && typeof val.then === 'function';
@@ -41336,7 +41390,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 459 */
+/* 460 */
 /*!*********************************************!*\
   !*** ./~/flux-standard-action/lib/index.js ***!
   \*********************************************/
@@ -41350,7 +41404,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _lodashIsplainobject = __webpack_require__(/*! lodash.isplainobject */ 460);
+	var _lodashIsplainobject = __webpack_require__(/*! lodash.isplainobject */ 461);
 	
 	var _lodashIsplainobject2 = _interopRequireDefault(_lodashIsplainobject);
 	
@@ -41369,7 +41423,7 @@
 	}
 
 /***/ },
-/* 460 */
+/* 461 */
 /*!*****************************************!*\
   !*** ./~/lodash.isplainobject/index.js ***!
   \*****************************************/
@@ -41383,9 +41437,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(/*! lodash._basefor */ 461),
-	    isArguments = __webpack_require__(/*! lodash.isarguments */ 462),
-	    keysIn = __webpack_require__(/*! lodash.keysin */ 463);
+	var baseFor = __webpack_require__(/*! lodash._basefor */ 462),
+	    isArguments = __webpack_require__(/*! lodash.isarguments */ 463),
+	    keysIn = __webpack_require__(/*! lodash.keysin */ 464);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -41481,7 +41535,7 @@
 
 
 /***/ },
-/* 461 */
+/* 462 */
 /*!************************************!*\
   !*** ./~/lodash._basefor/index.js ***!
   \************************************/
@@ -41538,7 +41592,7 @@
 
 
 /***/ },
-/* 462 */
+/* 463 */
 /*!***************************************!*\
   !*** ./~/lodash.isarguments/index.js ***!
   \***************************************/
@@ -41776,7 +41830,7 @@
 
 
 /***/ },
-/* 463 */
+/* 464 */
 /*!**********************************!*\
   !*** ./~/lodash.keysin/index.js ***!
   \**********************************/
@@ -41790,8 +41844,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArguments = __webpack_require__(/*! lodash.isarguments */ 462),
-	    isArray = __webpack_require__(/*! lodash.isarray */ 464);
+	var isArguments = __webpack_require__(/*! lodash.isarguments */ 463),
+	    isArray = __webpack_require__(/*! lodash.isarray */ 465);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -41917,7 +41971,7 @@
 
 
 /***/ },
-/* 464 */
+/* 465 */
 /*!***********************************!*\
   !*** ./~/lodash.isarray/index.js ***!
   \***********************************/
@@ -42106,7 +42160,7 @@
 
 
 /***/ },
-/* 465 */
+/* 466 */
 /*!*************************************!*\
   !*** ./~/redux-logger/lib/index.js ***!
   \*************************************/
@@ -42120,11 +42174,11 @@
 	  value: true
 	});
 	
-	var _core = __webpack_require__(/*! ./core */ 466);
+	var _core = __webpack_require__(/*! ./core */ 467);
 	
-	var _helpers = __webpack_require__(/*! ./helpers */ 467);
+	var _helpers = __webpack_require__(/*! ./helpers */ 468);
 	
-	var _defaults = __webpack_require__(/*! ./defaults */ 470);
+	var _defaults = __webpack_require__(/*! ./defaults */ 471);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
@@ -42227,7 +42281,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 466 */
+/* 467 */
 /*!************************************!*\
   !*** ./~/redux-logger/lib/core.js ***!
   \************************************/
@@ -42240,9 +42294,9 @@
 	});
 	exports.printBuffer = printBuffer;
 	
-	var _helpers = __webpack_require__(/*! ./helpers */ 467);
+	var _helpers = __webpack_require__(/*! ./helpers */ 468);
 	
-	var _diff = __webpack_require__(/*! ./diff */ 468);
+	var _diff = __webpack_require__(/*! ./diff */ 469);
 	
 	var _diff2 = _interopRequireDefault(_diff);
 	
@@ -42371,7 +42425,7 @@
 	}
 
 /***/ },
-/* 467 */
+/* 468 */
 /*!***************************************!*\
   !*** ./~/redux-logger/lib/helpers.js ***!
   \***************************************/
@@ -42398,7 +42452,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 468 */
+/* 469 */
 /*!************************************!*\
   !*** ./~/redux-logger/lib/diff.js ***!
   \************************************/
@@ -42411,7 +42465,7 @@
 	});
 	exports.default = diffLogger;
 	
-	var _deepDiff = __webpack_require__(/*! deep-diff */ 469);
+	var _deepDiff = __webpack_require__(/*! deep-diff */ 470);
 	
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 	
@@ -42497,7 +42551,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 469 */
+/* 470 */
 /*!******************************!*\
   !*** ./~/deep-diff/index.js ***!
   \******************************/
@@ -42929,7 +42983,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 470 */
+/* 471 */
 /*!****************************************!*\
   !*** ./~/redux-logger/lib/defaults.js ***!
   \****************************************/
@@ -42981,32 +43035,6 @@
 	  transformer: undefined
 	};
 	module.exports = exports['default'];
-
-/***/ },
-/* 471 */
-/*!******************************************!*\
-  !*** ./src/js/reducers/displayLayout.js ***!
-  \******************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var displayLayout = function displayLayout() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	  var action = arguments[1];
-	
-	  switch (action.type) {
-	    case 'DISPLAY_CATEGORY_MENU':
-	      return action.payload;
-	    default:
-	      return state;
-	  }
-	};
-	
-	exports.default = displayLayout;
 
 /***/ }
 /******/ ]);

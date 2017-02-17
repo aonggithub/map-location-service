@@ -30,6 +30,9 @@ export class MapContainer extends Component {
           this.setState({currentLocation});
           this.setState({radius});
           this.props.loadNearbyServiceLoc(currentLocation, radius);
+        }, (error) => {
+          console.log(error);
+          console.log("Geolocation is not enabled.");
         });
     }else{
       console.log("Geolocation is not supported by this browser.")
@@ -50,6 +53,7 @@ export class MapContainer extends Component {
           poiOnClick={this.props.changePOILocationDisplay}
           displayCategoryMenu={this.props.displayCategoryMenu}
           center = {this.state.currentLocation}
+          show= {this.state.currentLocation!=null}
           />
         <MenuPanel
           getAllLocation={this.props.loadServiceLoc}

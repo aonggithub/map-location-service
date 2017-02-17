@@ -44,21 +44,39 @@ class MapPanel extends Component {
                     scrollwheel: false,
                     styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
                   }
-                }
+    }
 
-    console.log(servicePlaces);
+    function handleClick(e) {
+      e.preventDefault();
+      location.reload();
+    }
+
     return (
+
       <div style={{height : this.props.height}}>
-        <GoogleMap
-          center={this.props.center}
-          defaultZoom={this.props.zoom}
-          onClick={(obj) => { console.log(obj) }}
-          onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
-          bootstrapURLKeys={{key: this.props.apiKeyParam}}
-          >
-          {servicePlaces}
-        </GoogleMap>
-        <MenuButton displayCategoryMenu={this.props.displayCategoryMenu}/>
+        {this.props.show?
+          <div>
+            <GoogleMap
+              center={this.props.center}
+              defaultZoom={this.props.zoom}
+              onClick={(obj) => { console.log(obj) }}
+              onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
+              bootstrapURLKeys={{key: this.props.apiKeyParam}}
+              onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
+              yesIWantToUseGoogleMapApiInternals={true}
+              >
+              {servicePlaces}
+            </GoogleMap>
+            <MenuButton displayCategoryMenu={this.props.displayCategoryMenu}/>
+          </div>
+        :
+        <div>
+          Yout GPS seems to be disabled, please enable it and click
+          <button onClick={ handleClick }>
+            Refresh
+          </button>
+        </div>
+        }
       </div>
     )
   }
@@ -71,7 +89,8 @@ MapPanel.propTypes = {
   apiKeyParam: PropTypes.string,
   height: PropTypes.any,
   poiOnClick: PropTypes.func,
-  displayCategoryMenu: PropTypes.func
+  displayCategoryMenu: PropTypes.func,
+  show: PropTypes.boolean
 }
 
 MapPanel.defaultProps = {
