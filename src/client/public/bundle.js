@@ -23944,6 +23944,8 @@
 	    value: function changeCategoryToDisplayBindingCurrentLocation(category) {
 	      this.props.changeCategoryToDisplay(category, this.state.currentLocation, this.state.radius);
 	    }
+	    //AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0
+	
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -23951,7 +23953,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
-	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
+	          apiKeyParam: '',
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayCategoryMenu: this.props.displayCategoryMenu,
@@ -24074,8 +24076,6 @@
 	          rated: '0',
 	          category: '0'
 	        });
-	        console.log("Current location");
-	        console.log(currentLocation);
 	        servicePlaces.push(currentLocation);
 	      }
 	
@@ -27269,7 +27269,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _MapMaker_styles = __webpack_require__(/*! ./MapMaker_styles */ 229);
+	var _MapMaker_styles = __webpack_require__(/*! ../style/MapMaker_styles */ 473);
+	
+	var _Glyphicon = __webpack_require__(/*! ./Glyphicon */ 472);
+	
+	var _Glyphicon2 = _interopRequireDefault(_Glyphicon);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -27295,7 +27299,7 @@
 	
 	      var makerStyle = {};
 	      makerStyle.style = this.props.$hover ? _MapMaker_styles.mapMakerStyle : _MapMaker_styles.mapMakerStyleHover;
-	      makerStyle.categoryIcon = "glyphicon glyphicon-home";
+	      makerStyle.categoryIcon = "home";
 	      makerStyle.img = "";
 	
 	      this.setStyleByCategory(this.props.category, makerStyle);
@@ -27311,7 +27315,7 @@
 	            _this2.props.poiOnClick(_this2.props);
 	            _this2.props.displayCategoryMenu(false);
 	          } },
-	        _react2.default.createElement('span', { className: makerStyle.categoryIcon }),
+	        _react2.default.createElement(_Glyphicon2.default, { name: makerStyle.categoryIcon }),
 	        makerStyle.img ? _react2.default.createElement('img', { src: makerStyle.img, style: { width: '50px' } }) : ''
 	      );
 	    }
@@ -27328,11 +27332,11 @@
 	      } else if (category == "cat2") {
 	        makerStyle.style.backgroundColor = '#DC143C';
 	        makerStyle.style.border = '2px solid #DC143C';
-	        makerStyle.categoryIcon = "glyphicon glyphicon-glass";
+	        makerStyle.categoryIcon = "glass";
 	      } else if (category == "cat3") {
 	        makerStyle.style.backgroundColor = '#1AAC5B';
 	        makerStyle.style.border = '2px solid #1AAC5B';
-	        makerStyle.categoryIcon = "glyphicon glyphicon-music";
+	        makerStyle.categoryIcon = "music";
 	      }
 	    }
 	  }]);
@@ -27354,50 +27358,7 @@
 	exports.default = MapMaker;
 
 /***/ },
-/* 229 */
-/*!**********************************************!*\
-  !*** ./src/js/components/MapMaker_styles.js ***!
-  \**********************************************/
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var K_WIDTH = 26;
-	var K_HEIGHT = 26;
-	
-	var mapMakerStyle = {
-	  // initially any map object has left top corner at lat lng coordinates
-	  // it's on you to set object origin to 0,0 coordinates
-	  position: 'absolute',
-	  width: K_WIDTH,
-	  height: K_HEIGHT,
-	  left: -K_WIDTH / 2,
-	  top: -K_HEIGHT / 2,
-	
-	  border: '2px solid #ffffff',
-	  borderRadius: K_HEIGHT,
-	  backgroundColor: 'white',
-	  textAlign: 'center',
-	  color: '#ffffff',
-	  //fontSize: 16,
-	  fontSize: 10,
-	  fontWeight: 'bold',
-	  padding: '6px 4px 4px 4px',
-	  boxSizing: 'border-box',
-	  cursor: 'pointer'
-	};
-	
-	var mapMakerStyleHover = Object.assign({}, mapMakerStyle);
-	mapMakerStyleHover.border = '2px solid #ffffff';
-	mapMakerStyleHover.color = '#ffffff';
-	
-	exports.mapMakerStyle = mapMakerStyle;
-	exports.mapMakerStyleHover = mapMakerStyleHover;
-
-/***/ },
+/* 229 */,
 /* 230 */
 /*!*****************************************!*\
   !*** ./src/js/components/MenuButton.js ***!
@@ -39199,6 +39160,12 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _Glyphicon = __webpack_require__(/*! ./Glyphicon */ 472);
+	
+	var _Glyphicon2 = _interopRequireDefault(_Glyphicon);
+	
+	var _MapMenu_styles = __webpack_require__(/*! ../style/MapMenu_styles */ 474);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39221,8 +39188,14 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var catBtnStyle = {
-	        cursor: 'pointer'
+	      var leftCatBtnStyle = {
+	        cursor: 'pointer',
+	        float: 'left'
+	      };
+	
+	      var rightCatBtnStyle = {
+	        cursor: 'pointer',
+	        float: 'right'
 	      };
 	
 	      return _react2.default.createElement(
@@ -39231,37 +39204,56 @@
 	        this.props.show ? _react2.default.createElement(
 	          'div',
 	          null,
-	          'Menu Panel',
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '28px' })
+	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { onClick: function onClick() {
 	                _this2.props.getAllLocation();
 	              },
-	              style: catBtnStyle },
+	              style: leftCatBtnStyle },
 	            'ALL'
 	          ),
+	          _react2.default.createElement('div', { style: { clear: 'both' } }),
+	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'div',
 	            { onClick: function onClick() {
 	                _this2.props.changeCategory('cat1');
-	              },
-	              style: catBtnStyle },
+	              }, style: leftCatBtnStyle },
+	            _react2.default.createElement(
+	              'div',
+	              { style: _MapMenu_styles.mapMenuStyle },
+	              _react2.default.createElement(_Glyphicon2.default, { name: 'home', size: '20px' })
+	            ),
 	            'Home'
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            { onClick: function onClick() {
 	                _this2.props.changeCategory('cat2');
-	              },
-	              style: catBtnStyle },
+	              }, style: rightCatBtnStyle },
+	            _react2.default.createElement(
+	              'div',
+	              { style: _MapMenu_styles.mapMenuStyle },
+	              _react2.default.createElement(_Glyphicon2.default, { name: 'glass', size: '20px' })
+	            ),
 	            'Diner'
 	          ),
+	          _react2.default.createElement('div', { style: { clear: 'both' } }),
 	          _react2.default.createElement(
 	            'div',
 	            { onClick: function onClick() {
 	                _this2.props.changeCategory('cat3');
-	              },
-	              style: catBtnStyle },
+	              }, style: leftCatBtnStyle },
+	            _react2.default.createElement(
+	              'div',
+	              { style: _MapMenu_styles.mapMenuStyle },
+	              _react2.default.createElement(_Glyphicon2.default, { name: 'music', size: '20px' })
+	            ),
 	            'Pub'
 	          )
 	        ) : ''
@@ -43035,6 +43027,142 @@
 	  transformer: undefined
 	};
 	module.exports = exports['default'];
+
+/***/ },
+/* 472 */
+/*!****************************************!*\
+  !*** ./src/js/components/Glyphicon.js ***!
+  \****************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Glyphicon = function (_Component) {
+	  _inherits(Glyphicon, _Component);
+	
+	  function Glyphicon(props, context) {
+	    _classCallCheck(this, Glyphicon);
+	
+	    return _possibleConstructorReturn(this, (Glyphicon.__proto__ || Object.getPrototypeOf(Glyphicon)).call(this, props, context));
+	  }
+	
+	  _createClass(Glyphicon, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement('span', { className: 'glyphicon glyphicon-' + this.props.name, style: { fontSize: this.props.size } })
+	      );
+	    }
+	  }]);
+	
+	  return Glyphicon;
+	}(_react.Component);
+	
+	Glyphicon.propTypes = {
+	  name: _react.PropTypes.string,
+	  size: _react.PropTypes.string
+	};
+	
+	Glyphicon.defaultProps = {
+	  size: '10px'
+	};
+	
+	exports.default = Glyphicon;
+
+/***/ },
+/* 473 */
+/*!*****************************************!*\
+  !*** ./src/js/style/MapMaker_styles.js ***!
+  \*****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var K_WIDTH = 26;
+	var K_HEIGHT = 26;
+	
+	var mapMakerStyle = {
+	  // initially any map object has left top corner at lat lng coordinates
+	  // it's on you to set object origin to 0,0 coordinates
+	  position: 'absolute',
+	  width: K_WIDTH,
+	  height: K_HEIGHT,
+	  left: -K_WIDTH / 2,
+	  top: -K_HEIGHT / 2,
+	
+	  border: '2px solid #ffffff',
+	  borderRadius: K_HEIGHT,
+	  backgroundColor: 'white',
+	  textAlign: 'center',
+	  color: '#ffffff',
+	  //fontSize: 16,
+	  fontSize: 10,
+	  fontWeight: 'bold',
+	  padding: '6px 4px 4px 4px',
+	  boxSizing: 'border-box',
+	  cursor: 'pointer'
+	};
+	
+	var mapMakerStyleHover = Object.assign({}, mapMakerStyle);
+	mapMakerStyleHover.border = '2px solid #ffffff';
+	mapMakerStyleHover.color = '#ffffff';
+	
+	exports.mapMakerStyle = mapMakerStyle;
+	exports.mapMakerStyleHover = mapMakerStyleHover;
+
+/***/ },
+/* 474 */
+/*!****************************************!*\
+  !*** ./src/js/style/MapMenu_styles.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var K_WIDTH = 44;
+	var K_HEIGHT = 44;
+	
+	var mapMenuStyle = {
+	  width: K_WIDTH,
+	  height: K_HEIGHT,
+	
+	  border: '2px solid grey',
+	  borderRadius: '50%',
+	  backgroundColor: 'grey',
+	  textAlign: 'center',
+	  color: '#ffffff',
+	  padding: '10px 0px',
+	  fontWeight: 'bold',
+	  cursor: 'pointer'
+	};
+	
+	exports.mapMenuStyle = mapMenuStyle;
 
 /***/ }
 /******/ ]);

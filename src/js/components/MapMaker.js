@@ -1,5 +1,6 @@
 import React, {PropTypes, Component } from 'react';
-import {mapMakerStyle, mapMakerStyleHover} from './MapMaker_styles'
+import {mapMakerStyle, mapMakerStyleHover} from '../style/MapMaker_styles'
+import Glyphicon from './Glyphicon';
 
 class MapMaker extends Component {
 
@@ -10,7 +11,7 @@ class MapMaker extends Component {
   render() {
     let makerStyle = {};
     makerStyle.style = this.props.$hover ? mapMakerStyle : mapMakerStyleHover;
-    makerStyle.categoryIcon = "glyphicon glyphicon-home";
+    makerStyle.categoryIcon = "home";
     makerStyle.img = "";
 
     this.setStyleByCategory(this.props.category, makerStyle);
@@ -25,7 +26,7 @@ class MapMaker extends Component {
               this.props.poiOnClick(this.props)
               this.props.displayCategoryMenu(false);
             }}>
-          <span className={makerStyle.categoryIcon}></span>
+          <Glyphicon name={makerStyle.categoryIcon} />
           { makerStyle.img ? <img src={makerStyle.img} style={{width: '50px'}}/> : ''}
        </div>
     );
@@ -42,11 +43,11 @@ class MapMaker extends Component {
     } else if (category == "cat2") {
       makerStyle.style.backgroundColor = '#DC143C';
       makerStyle.style.border = '2px solid #DC143C'
-      makerStyle.categoryIcon = "glyphicon glyphicon-glass";
+      makerStyle.categoryIcon = "glass";
     } else if (category == "cat3") {
       makerStyle.style.backgroundColor = '#1AAC5B';
       makerStyle.style.border = '2px solid #1AAC5B'
-      makerStyle.categoryIcon = "glyphicon glyphicon-music";
+      makerStyle.categoryIcon = "music";
     }
   }
 }

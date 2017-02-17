@@ -31,8 +31,6 @@ class MapPanel extends Component {
             rated= "0"
             category= "0"
             />
-          console.log("Current location");
-          console.log(currentLocation);
       servicePlaces.push(currentLocation);
     }
 
@@ -52,7 +50,6 @@ class MapPanel extends Component {
     }
 
     return (
-
       <div style={{height : this.props.height}}>
         {this.props.show?
           <div>
