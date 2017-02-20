@@ -42,6 +42,25 @@ var ConstantServiceLocations = [
    }
 ];
 
+var ConstantCategories = [
+    {
+       "_id": "58aa9a4da725802928a9f791",
+       "id": "1",
+       "name": "Home",
+       "icon": "home"
+    },{
+       "_id": "58aa9a4da725802928a9f792",
+       "id": "2",
+       "name": "Restaurant",
+       "icon": "glass"
+    },{
+       "_id": "58aa9a4da725802928a9f793",
+       "id": "3",
+       "name": "Pub",
+       "icon": "music"
+    }
+];
+
 export const addServiceLoc = (text) => {
   return {
     type: 'ADD_SERVICE_LOC',
@@ -86,6 +105,37 @@ export const getServiceLoc = () => {
 
         dispatch({
           type: 'GET_SERVICE_LOC',
+          payload: data
+        });
+      })
+    }
+    // Ending getting data from Server
+  }
+}
+
+
+export const getCategories = () => {
+  return function(dispatch){
+    // Setting fixed data
+
+    if(ClientConfig.env == 'prod'){
+      let categories = ConstantCategories;
+
+      dispatch({
+        type: 'GET_CATEGORIES',
+        payload: categories
+      });
+    }
+    // Ending Setting fixed data
+
+    if(ClientConfig.env == 'dev'){
+      // Get data from Server
+      axios.get(`${API_URL}/getCategories`)
+      .then(response =>{
+        let data = response.data.data;
+
+        dispatch({
+          type: 'GET_CATEGORIES',
           payload: data
         });
       })

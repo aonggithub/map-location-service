@@ -1,6 +1,6 @@
 import React, {PropTypes, Component } from 'react';
 import Glyphicon from './Glyphicon';
-import {mapMenuStyle} from '../style/MapMenu_styles'
+import {mapMenuStyle, mapMenuFontStyle} from '../style/MapMenu_styles'
 
 class MenuPanel extends Component {
   constructor (props, context) {
@@ -10,7 +10,8 @@ class MenuPanel extends Component {
   render() {
     const leftCatBtnStyle = {
       cursor: 'pointer',
-      float: 'left'
+      float: 'left',
+      textAlign: 'center'
     }
 
     const rightCatBtnStyle = {
@@ -18,29 +19,25 @@ class MenuPanel extends Component {
       float: 'right'
     }
 
+    let categoryMenu = this.props.categories.map( category => {
+      return <div onClick={() => {this.props.changeCategory('cat'+ category.id)}} style={leftCatBtnStyle}>
+                <div style={mapMenuStyle}><Glyphicon name={category.icon} size="20px"/></div>
+                <span style={mapMenuFontStyle}>{category.name}</span>
+              </div>
+          }, this);
+
     return (
       <div>
         {this.props.show?
           <div>
-            <div><Glyphicon name="map-marker" size="28px"/></div>
             <div onClick={() => {this.props.getAllLocation()}}
               style={leftCatBtnStyle}>
-              ALL
+              <Glyphicon name="map-marker" size="18px"/>
             </div>
             <div style={{clear:'both'}}></div>
             <br/>
-            <div onClick={() => {this.props.changeCategory('cat1')}} style={leftCatBtnStyle}>
-              <div style={mapMenuStyle}><Glyphicon name="home" size="20px"/></div>
-              Home
-            </div>
-            <div onClick={() => {this.props.changeCategory('cat2')}} style={rightCatBtnStyle}>
-              <div style={mapMenuStyle}><Glyphicon name="glass" size="20px"/></div>
-              Diner
-            </div>
-            <div style={{clear:'both'}}></div>
-            <div onClick={() => {this.props.changeCategory('cat3')}} style={leftCatBtnStyle}>
-              <div style={mapMenuStyle}><Glyphicon name="music" size="20px"/></div>
-              Pub
+            <div style={{width:'200px'}}>
+              {categoryMenu}
             </div>
           </div>
           :''
@@ -53,7 +50,7 @@ class MenuPanel extends Component {
 MenuPanel.propTypes = {
   changeCategory: PropTypes.func,
   getAllLocation: PropTypes.func,
-  category: PropTypes.any,
+  categories: PropTypes.any,
   show: PropTypes.boolean
 }
 

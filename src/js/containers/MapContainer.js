@@ -6,7 +6,8 @@ import { getServiceLoc,
         getNearbyServiceLoc,
         changePOILocation,
         changeCategoryToDisplay,
-        displayCategoryMenu } from '../action';
+        displayCategoryMenu,
+        getCategories} from '../action';
 
 export class MapContainer extends Component {
   constructor (props, context) {
@@ -17,6 +18,7 @@ export class MapContainer extends Component {
   componentDidMount(){
     // this.props.loadServiceLoc();
     this.initialCurrentPos();
+    this.props.loadCategories();
   }
 
   initialCurrentPos(){
@@ -59,6 +61,7 @@ export class MapContainer extends Component {
           getAllLocation={this.props.loadServiceLoc}
           changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
           show={this.props.displayCatMenu}
+          categories={this.props.categories}
           />
       </div>
     )
@@ -68,7 +71,8 @@ export class MapContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     locations: state.locations,
-    displayCatMenu: state.displayLayout.displayCatMenu
+    displayCatMenu: state.displayLayout.displayCatMenu,
+    categories: state.categories
   }
 }
 
@@ -79,6 +83,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadNearbyServiceLoc: (currentLocation, radius) => {
       dispatch(getNearbyServiceLoc(currentLocation, radius))
+    },
+    loadCategories: () => {
+      dispatch(getCategories())
     },
     changePOILocationDisplay: (poiObj) => {
       dispatch(changePOILocation(poiObj))

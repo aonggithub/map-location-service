@@ -23913,6 +23913,7 @@
 	    value: function componentDidMount() {
 	      // this.props.loadServiceLoc();
 	      this.initialCurrentPos();
+	      this.props.loadCategories();
 	    }
 	  }, {
 	    key: 'initialCurrentPos',
@@ -23963,7 +23964,8 @@
 	        _react2.default.createElement(_MenuPanel2.default, {
 	          getAllLocation: this.props.loadServiceLoc,
 	          changeCategory: this.changeCategoryToDisplayBindingCurrentLocation.bind(this),
-	          show: this.props.displayCatMenu
+	          show: this.props.displayCatMenu,
+	          categories: this.props.categories
 	        })
 	      );
 	    }
@@ -23975,7 +23977,8 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    locations: state.locations,
-	    displayCatMenu: state.displayLayout.displayCatMenu
+	    displayCatMenu: state.displayLayout.displayCatMenu,
+	    categories: state.categories
 	  };
 	};
 	
@@ -23986,6 +23989,9 @@
 	    },
 	    loadNearbyServiceLoc: function loadNearbyServiceLoc(currentLocation, radius) {
 	      dispatch((0, _action.getNearbyServiceLoc)(currentLocation, radius));
+	    },
+	    loadCategories: function loadCategories() {
+	      dispatch((0, _action.getCategories)());
 	    },
 	    changePOILocationDisplay: function changePOILocationDisplay(poiObj) {
 	      dispatch((0, _action.changePOILocation)(poiObj));
@@ -39190,13 +39196,33 @@
 	
 	      var leftCatBtnStyle = {
 	        cursor: 'pointer',
-	        float: 'left'
+	        float: 'left',
+	        textAlign: 'center'
 	      };
 	
 	      var rightCatBtnStyle = {
 	        cursor: 'pointer',
 	        float: 'right'
 	      };
+	
+	      var categoryMenu = this.props.categories.map(function (category) {
+	        return _react2.default.createElement(
+	          'div',
+	          { onClick: function onClick() {
+	              _this2.props.changeCategory('cat' + category.id);
+	            }, style: leftCatBtnStyle },
+	          _react2.default.createElement(
+	            'div',
+	            { style: _MapMenu_styles.mapMenuStyle },
+	            _react2.default.createElement(_Glyphicon2.default, { name: category.icon, size: '20px' })
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { style: _MapMenu_styles.mapMenuFontStyle },
+	            category.name
+	          )
+	        );
+	      }, this);
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -39206,55 +39232,18 @@
 	          null,
 	          _react2.default.createElement(
 	            'div',
-	            null,
-	            _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '28px' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
 	            { onClick: function onClick() {
 	                _this2.props.getAllLocation();
 	              },
 	              style: leftCatBtnStyle },
-	            'ALL'
+	            _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '18px' })
 	          ),
 	          _react2.default.createElement('div', { style: { clear: 'both' } }),
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'div',
-	            { onClick: function onClick() {
-	                _this2.props.changeCategory('cat1');
-	              }, style: leftCatBtnStyle },
-	            _react2.default.createElement(
-	              'div',
-	              { style: _MapMenu_styles.mapMenuStyle },
-	              _react2.default.createElement(_Glyphicon2.default, { name: 'home', size: '20px' })
-	            ),
-	            'Home'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { onClick: function onClick() {
-	                _this2.props.changeCategory('cat2');
-	              }, style: rightCatBtnStyle },
-	            _react2.default.createElement(
-	              'div',
-	              { style: _MapMenu_styles.mapMenuStyle },
-	              _react2.default.createElement(_Glyphicon2.default, { name: 'glass', size: '20px' })
-	            ),
-	            'Diner'
-	          ),
-	          _react2.default.createElement('div', { style: { clear: 'both' } }),
-	          _react2.default.createElement(
-	            'div',
-	            { onClick: function onClick() {
-	                _this2.props.changeCategory('cat3');
-	              }, style: leftCatBtnStyle },
-	            _react2.default.createElement(
-	              'div',
-	              { style: _MapMenu_styles.mapMenuStyle },
-	              _react2.default.createElement(_Glyphicon2.default, { name: 'music', size: '20px' })
-	            ),
-	            'Pub'
+	            { style: { width: '200px' } },
+	            categoryMenu
 	          )
 	        ) : ''
 	      );
@@ -39267,7 +39256,7 @@
 	MenuPanel.propTypes = {
 	  changeCategory: _react.PropTypes.func,
 	  getAllLocation: _react.PropTypes.func,
-	  category: _react.PropTypes.any,
+	  categories: _react.PropTypes.any,
 	  show: _react.PropTypes.boolean
 	};
 	
@@ -39287,7 +39276,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.changeCategoryToDisplay = exports.getNearbyServiceLoc = exports.getServiceLoc = exports.changePOILocation = exports.displayCategoryMenu = exports.addServiceLoc = undefined;
+	exports.changeCategoryToDisplay = exports.getNearbyServiceLoc = exports.getCategories = exports.getServiceLoc = exports.changePOILocation = exports.displayCategoryMenu = exports.addServiceLoc = undefined;
 	
 	var _axios = __webpack_require__(/*! axios */ 426);
 	
@@ -39332,6 +39321,23 @@
 	  category: 'cat3'
 	}];
 	
+	var ConstantCategories = [{
+	  "_id": "58aa9a4da725802928a9f791",
+	  "id": "1",
+	  "name": "Home",
+	  "icon": "home"
+	}, {
+	  "_id": "58aa9a4da725802928a9f792",
+	  "id": "2",
+	  "name": "Restaurant",
+	  "icon": "glass"
+	}, {
+	  "_id": "58aa9a4da725802928a9f793",
+	  "id": "3",
+	  "name": "Pub",
+	  "icon": "music"
+	}];
+	
 	var addServiceLoc = exports.addServiceLoc = function addServiceLoc(text) {
 	  return {
 	    type: 'ADD_SERVICE_LOC',
@@ -39374,6 +39380,35 @@
 	
 	        dispatch({
 	          type: 'GET_SERVICE_LOC',
+	          payload: data
+	        });
+	      });
+	    }
+	    // Ending getting data from Server
+	  };
+	};
+	
+	var getCategories = exports.getCategories = function getCategories() {
+	  return function (dispatch) {
+	    // Setting fixed data
+	
+	    if (ClientConfig.env == 'prod') {
+	      var categories = ConstantCategories;
+	
+	      dispatch({
+	        type: 'GET_CATEGORIES',
+	        payload: categories
+	      });
+	    }
+	    // Ending Setting fixed data
+	
+	    if (ClientConfig.env == 'dev') {
+	      // Get data from Server
+	      _axios2.default.get(API_URL + '/getCategories').then(function (response) {
+	        var data = response.data.data;
+	
+	        dispatch({
+	          type: 'GET_CATEGORIES',
 	          payload: data
 	        });
 	      });
@@ -41214,12 +41249,17 @@
 	
 	var _displayLayout2 = _interopRequireDefault(_displayLayout);
 	
+	var _categories = __webpack_require__(/*! ./categories */ 475);
+	
+	var _categories2 = _interopRequireDefault(_categories);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapApp = (0, _redux.combineReducers)({
 	  locations: _locations2.default,
 	  poiLocation: _poiLocation2.default,
-	  displayLayout: _displayLayout2.default
+	  displayLayout: _displayLayout2.default,
+	  categories: _categories2.default
 	});
 	
 	exports.default = mapApp;
@@ -43158,11 +43198,48 @@
 	  textAlign: 'center',
 	  color: '#ffffff',
 	  padding: '10px 0px',
+	  margin: '0px 20px',
 	  fontWeight: 'bold',
 	  cursor: 'pointer'
 	};
 	
+	var mapMenuFontStyle = {
+	  fontFamily: 'Helvetica',
+	  fontStyle: 'normal',
+	  color: '#6b6b6b',
+	  fontSize: '12px',
+	  fontWeight: 'bold',
+	  backgroundColor: '#FFFFFF'
+	};
+	
 	exports.mapMenuStyle = mapMenuStyle;
+	exports.mapMenuFontStyle = mapMenuFontStyle;
+
+/***/ },
+/* 475 */
+/*!***************************************!*\
+  !*** ./src/js/reducers/categories.js ***!
+  \***************************************/
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var categories = function categories() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case 'GET_CATEGORIES':
+	      return action.payload;
+	    default:
+	      return state;
+	  }
+	};
+	
+	exports.default = categories;
 
 /***/ }
 /******/ ]);
