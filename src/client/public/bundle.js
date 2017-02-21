@@ -23920,6 +23920,8 @@
 	    value: function initialCurrentPos() {
 	      var _this2 = this;
 	
+	      this.props.displayCategoryMenu(true);
+	
 	      // Initial Current position.
 	      if (navigator.geolocation) {
 	        navigator.geolocation.getCurrentPosition(function (position) {
@@ -23928,7 +23930,7 @@
 	          var currentLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
 	          _this2.setState({ currentLocation: currentLocation });
 	          _this2.setState({ radius: radius });
-	          _this2.props.loadNearbyServiceLoc(currentLocation, radius);
+	          //this.props.loadNearbyServiceLoc(currentLocation, radius);
 	        }, function (error) {
 	          console.log(error);
 	          console.log("Geolocation is not enabled.");
@@ -24111,7 +24113,7 @@
 	              center: this.props.center,
 	              defaultZoom: this.props.zoom,
 	              onClick: function onClick(obj) {
-	                console.log(obj);
+	                _this2.props.displayCategoryMenu(true);
 	              },
 	              onZoomAnimationStart: function onZoomAnimationStart(obj) {
 	                console.log("onZoomAnimationStart");
@@ -27310,9 +27312,9 @@
 	
 	      this.setStyleByCategory(this.props.category, makerStyle);
 	
-	      if (this.props.category == "0") {
-	        makerStyle.img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png";
-	      }
+	      // if(this.props.category == "0"){
+	      //   makerStyle.img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png"
+	      // }
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -27321,7 +27323,7 @@
 	            _this2.props.poiOnClick(_this2.props);
 	            _this2.props.displayCategoryMenu(false);
 	          } },
-	        _react2.default.createElement(_Glyphicon2.default, { name: makerStyle.categoryIcon }),
+	        _react2.default.createElement(_Glyphicon2.default, { name: makerStyle.categoryIcon, size: this.props.category == '0' ? '35px' : '' }),
 	        makerStyle.img ? _react2.default.createElement('img', { src: makerStyle.img, style: { width: '50px' } }) : ''
 	      );
 	    }
@@ -27331,7 +27333,8 @@
 	      if (category == "0") {
 	        // If category is 0, that means current location
 	        makerStyle.style = {};
-	        makerStyle.categoryIcon = "";
+	        makerStyle.style.color = '#1164ec';
+	        makerStyle.categoryIcon = "map-marker";
 	      } else if (category == "cat1") {
 	        makerStyle.style.backgroundColor = '#1164ec';
 	        makerStyle.style.border = '2px solid #1164ec';
@@ -39235,11 +39238,9 @@
 	            { onClick: function onClick() {
 	                _this2.props.getAllLocation();
 	              },
-	              style: leftCatBtnStyle },
+	              style: { padding: '10px 0px', textAlign: 'center' } },
 	            _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '18px' })
 	          ),
-	          _react2.default.createElement('div', { style: { clear: 'both' } }),
-	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'div',
 	            { style: { width: '200px' } },
@@ -41176,6 +41177,18 @@
 	  _createClass(POIPanel, [{
 	    key: 'render',
 	    value: function render() {
+	      var ratedStyle = {
+	        fontWeight: 'normal',
+	        color: '#FF4B0A',
+	        fontFamily: 'Roboto,sans-serif',
+	        fontSize: '16px'
+	      };
+	      var linkStyle = Object.assign({}, ratedStyle);
+	      linkStyle.color = '#039BE5';
+	
+	      //http://maps.google.com/?saddr={this.props.center.lat},{this.props.center.lng}&daddr={this.props.poiLocation.lat},{this.props.poiLocation.lng}
+	      var linktoGoogleMap = 'http://maps.google.com/?saddr=' + this.props.center.lat + ',' + this.props.center.lng + '&daddr=' + this.props.poiLocation.lat + ',' + this.props.poiLocation.lng;
+	
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -41184,19 +41197,48 @@
 	          { style: { height: this.props.height } },
 	          _react2.default.createElement(
 	            'div',
-	            { style: { float: 'left', width: '30%' } },
-	            _react2.default.createElement('img', { src: '../img/photo-album-icon-png-14.png', height: '100%' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { style: { float: 'left', paddingTop: '10px' } },
+	            { className: 'row' },
 	            _react2.default.createElement(
-	              'span',
-	              { style: { fontWeight: 'bold' } },
-	              this.props.poiLocation.title
+	              'div',
+	              { className: 'col-xs-4 col-md-2' },
+	              _react2.default.createElement('img', { src: '../img/photo-album-icon-png-14.png', height: '100%' })
 	            ),
-	            _react2.default.createElement('br', null),
-	            this.props.poiLocation.rated
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-8 col-md-6' },
+	              _react2.default.createElement(
+	                'div',
+	                { style: { padding: '10px 0px' } },
+	                _react2.default.createElement(
+	                  'span',
+	                  { style: { fontWeight: 'bold' } },
+	                  this.props.poiLocation.title
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { padding: '5px 0px' } },
+	                _react2.default.createElement(
+	                  'span',
+	                  { style: ratedStyle },
+	                  'Rated: ',
+	                  this.props.poiLocation.rated
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'div',
+	                { style: { padding: '5px 0px' } },
+	                _react2.default.createElement(
+	                  'span',
+	                  { style: linkStyle },
+	                  _react2.default.createElement(
+	                    'a',
+	                    { href: linktoGoogleMap },
+	                    'Get direction'
+	                  )
+	                )
+	              )
+	            )
 	          )
 	        ) : ''
 	      );
@@ -43192,9 +43234,9 @@
 	  width: K_WIDTH,
 	  height: K_HEIGHT,
 	
-	  border: '2px solid grey',
+	  border: '2px solid #585858',
 	  borderRadius: '50%',
-	  backgroundColor: 'grey',
+	  backgroundColor: '#585858',
 	  textAlign: 'center',
 	  color: '#ffffff',
 	  padding: '10px 0px',

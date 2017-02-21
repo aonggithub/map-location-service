@@ -22,6 +22,9 @@ export class MapContainer extends Component {
   }
 
   initialCurrentPos(){
+
+    this.props.displayCategoryMenu(true);
+
     // Initial Current position.
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
@@ -31,7 +34,7 @@ export class MapContainer extends Component {
           var currentLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
           this.setState({currentLocation});
           this.setState({radius});
-          this.props.loadNearbyServiceLoc(currentLocation, radius);
+          //this.props.loadNearbyServiceLoc(currentLocation, radius);
         }, (error) => {
           console.log(error);
           console.log("Geolocation is not enabled.");

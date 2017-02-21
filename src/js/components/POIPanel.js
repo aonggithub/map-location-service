@@ -6,19 +6,44 @@ class POIPanel extends Component {
   }
 
   render() {
+    let ratedStyle = {
+      fontWeight:'normal',
+      color: '#FF4B0A',
+      fontFamily:'Roboto,sans-serif',
+      fontSize:'16px'
+    }
+    let linkStyle = Object.assign({}, ratedStyle);
+    linkStyle.color='#039BE5';
+
+    //http://maps.google.com/?saddr={this.props.center.lat},{this.props.center.lng}&daddr={this.props.poiLocation.lat},{this.props.poiLocation.lng}
+    let linktoGoogleMap = 'http://maps.google.com/?saddr='
+    + this.props.center.lat + ','
+    + this.props.center.lng + '&daddr='
+    + this.props.poiLocation.lat + ',' + this.props.poiLocation.lng;
+
     return (
       <div>
         {this.props.show?
           <div style={{height: this.props.height}}>
-            <div style={{float: 'left', width: '30%'}}>
-                <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
-            </div>
-            <div style={{float: 'left', paddingTop: '10px'}}>
-              <span style={{fontWeight: 'bold'}}>
-                {this.props.poiLocation.title}
-              </span>
-              <br></br>
-              {this.props.poiLocation.rated}
+            <div className='row'>
+              <div className='col-xs-4 col-md-2'>
+                  <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
+              </div>
+              <div className='col-xs-8 col-md-6'>
+                <div style={{padding: '10px 0px'}}>
+                  <span style={{fontWeight: 'bold'}}>{this.props.poiLocation.title}</span>
+                </div>
+                <div style={{padding: '5px 0px'}}>
+                  <span style={ratedStyle}>
+                  Rated: {this.props.poiLocation.rated}
+                  </span>
+                </div>
+                <div style={{padding: '5px 0px'}}>
+                  <span style={linkStyle}>
+                    <a href={linktoGoogleMap}>Get direction</a>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           :''}

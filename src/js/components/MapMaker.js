@@ -16,9 +16,9 @@ class MapMaker extends Component {
 
     this.setStyleByCategory(this.props.category, makerStyle);
 
-    if(this.props.category == "0"){
-      makerStyle.img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png"
-    }
+    // if(this.props.category == "0"){
+    //   makerStyle.img = "https://cdn4.iconfinder.com/data/icons/e-commerce-5/512/Location_Detailed-3-512.png"
+    // }
 
     return (
        <div style={makerStyle.style}
@@ -26,7 +26,7 @@ class MapMaker extends Component {
               this.props.poiOnClick(this.props)
               this.props.displayCategoryMenu(false);
             }}>
-          <Glyphicon name={makerStyle.categoryIcon} />
+          <Glyphicon name={makerStyle.categoryIcon} size={this.props.category=='0'?'35px':''}/>
           { makerStyle.img ? <img src={makerStyle.img} style={{width: '50px'}}/> : ''}
        </div>
     );
@@ -36,7 +36,8 @@ class MapMaker extends Component {
     if(category == "0"){
       // If category is 0, that means current location
       makerStyle.style = {};
-      makerStyle.categoryIcon = ""
+      makerStyle.style.color = '#1164ec';
+      makerStyle.categoryIcon = "map-marker"
     } else if (category == "cat1") {
       makerStyle.style.backgroundColor = '#1164ec';
       makerStyle.style.border = '2px solid #1164ec';

@@ -31,11 +31,9 @@ class MenuPanel extends Component {
         {this.props.show?
           <div>
             <div onClick={() => {this.props.getAllLocation()}}
-              style={leftCatBtnStyle}>
+              style={{padding: '10px 0px', textAlign: 'center'}}>
               <Glyphicon name="map-marker" size="18px"/>
             </div>
-            <div style={{clear:'both'}}></div>
-            <br/>
             <div style={{width:'200px'}}>
               {categoryMenu}
             </div>

@@ -56,7 +56,7 @@ class MapPanel extends Component {
             <GoogleMap
               center={this.props.center}
               defaultZoom={this.props.zoom}
-              onClick={(obj) => { console.log(obj) }}
+              onClick={(obj) => { this.props.displayCategoryMenu(true) }}
               onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
               bootstrapURLKeys={{key: this.props.apiKeyParam}}
               onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}

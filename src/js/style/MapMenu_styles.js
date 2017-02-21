@@ -5,9 +5,9 @@ let mapMenuStyle = {
   width: K_WIDTH,
   height: K_HEIGHT,
 
-  border: '2px solid grey',
+  border: '2px solid #585858',
   borderRadius: '50%',
-  backgroundColor: 'grey',
+  backgroundColor: '#585858',
   textAlign: 'center',
   color: '#ffffff',
   padding: '10px 0px',
