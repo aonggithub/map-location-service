@@ -23956,7 +23956,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
-	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
+	          apiKeyParam: '',
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayCategoryMenu: this.props.displayCategoryMenu,
@@ -23966,7 +23966,7 @@
 	        _react2.default.createElement(_MenuPanel2.default, {
 	          getAllLocation: this.props.loadServiceLoc,
 	          changeCategory: this.changeCategoryToDisplayBindingCurrentLocation.bind(this),
-	          show: this.props.displayCatMenu,
+	          show: this.props.displayCatMenu && this.state.currentLocation != null,
 	          categories: this.props.categories
 	        })
 	      );
@@ -24096,7 +24096,7 @@
 	        };
 	      };
 	
-	      function handleClick(e) {
+	      function refreshPage(e) {
 	        e.preventDefault();
 	        location.reload();
 	      }
@@ -24132,11 +24132,20 @@
 	        ) : _react2.default.createElement(
 	          'div',
 	          null,
-	          'Yout GPS seems to be disabled, please enable it and click',
 	          _react2.default.createElement(
-	            'button',
-	            { onClick: handleClick },
-	            'Refresh'
+	            'div',
+	            { style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              'div',
+	              { style: { margin: '20px' } },
+	              'Your GPS seems to be disabled. Check your GPS or try again'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'button', className: 'btn btn-default',
+	                onClick: refreshPage },
+	              'TRY AGAIN'
+	            )
 	          )
 	        )
 	      );
@@ -27442,7 +27451,6 @@
 	            { style: buttonStyle,
 	              onClick: function onClick(e) {
 	                e.preventDefault();
-	                console.log("FloatingActionButton click");
 	                _this2.props.displayCategoryMenu(true);
 	              }
 	            },
@@ -41208,7 +41216,7 @@
 	              { className: 'col-xs-8 col-md-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { style: { padding: '10px 0px' } },
+	                { style: { fontFamily: 'Roboto,sans-serif', fontSize: '16px', padding: '10px 0px' } },
 	                _react2.default.createElement(
 	                  'span',
 	                  { style: { fontWeight: 'bold' } },
@@ -43234,9 +43242,9 @@
 	  width: K_WIDTH,
 	  height: K_HEIGHT,
 	
-	  border: '2px solid #585858',
+	  border: '2px solid #909090',
 	  borderRadius: '50%',
-	  backgroundColor: '#585858',
+	  backgroundColor: '#909090',
 	  textAlign: 'center',
 	  color: '#ffffff',
 	  padding: '10px 0px',

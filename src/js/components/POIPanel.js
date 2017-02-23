@@ -30,7 +30,7 @@ class POIPanel extends Component {
                   <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
               </div>
               <div className='col-xs-8 col-md-6'>
-                <div style={{padding: '10px 0px'}}>
+                <div style={{fontFamily:'Roboto,sans-serif', fontSize:'16px', padding: '10px 0px'}}>
                   <span style={{fontWeight: 'bold'}}>{this.props.poiLocation.title}</span>
                 </div>
                 <div style={{padding: '5px 0px'}}>

@@ -44,7 +44,7 @@ class MapPanel extends Component {
                   }
     }
 
-    function handleClick(e) {
+    function refreshPage(e) {
       e.preventDefault();
       location.reload();
     }
@@ -56,7 +56,7 @@ class MapPanel extends Component {
             <GoogleMap
               center={this.props.center}
               defaultZoom={this.props.zoom}
-              onClick={(obj) => { this.props.displayCategoryMenu(true) }}
+              onClick={(obj) => {this.props.displayCategoryMenu(true)}}
               onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
               bootstrapURLKeys={{key: this.props.apiKeyParam}}
               onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
@@ -68,10 +68,14 @@ class MapPanel extends Component {
           </div>
         :
         <div>
-          Yout GPS seems to be disabled, please enable it and click
-          <button onClick={ handleClick }>
-            Refresh
-          </button>
+          <div style={{textAlign: 'center'}}>
+            <div style={{margin: '20px'}}>
+              Your GPS seems to be disabled. Check your GPS or try again
+            </div>
+            <button type="button" className="btn btn-default"
+              onClick={ refreshPage }>TRY AGAIN
+            </button>
+          </div>
         </div>
         }
       </div>

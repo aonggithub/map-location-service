@@ -53,7 +53,7 @@ export class MapContainer extends Component {
     return (
       <div>
         <MapPanel serviceLocations = {this.props.locations}
-          apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
+          apiKeyParam = {''}
           height = '80%'
           poiOnClick={this.props.changePOILocationDisplay}
           displayCategoryMenu={this.props.displayCategoryMenu}
@@ -63,7 +63,7 @@ export class MapContainer extends Component {
         <MenuPanel
           getAllLocation={this.props.loadServiceLoc}
           changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
-          show={this.props.displayCatMenu}
+          show={this.props.displayCatMenu && this.state.currentLocation!=null}
           categories={this.props.categories}
           />
       </div>
