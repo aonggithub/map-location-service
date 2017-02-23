@@ -39209,7 +39209,6 @@
 	        cursor: 'pointer',
 	        float: 'left',
 	        textAlign: 'left',
-	        padding: '0px 0px 0px 30px',
 	        margin: '10px 0px'
 	      };
 	
@@ -39217,13 +39216,12 @@
 	        cursor: 'pointer',
 	        float: 'right',
 	        textAlign: 'left',
-	        padding: '0px 0px 0px 30px',
 	        margin: '10px 0px'
 	      };
 	
 	      var menuPanelStyle = {
 	        width: '95%',
-	        margin: '20px 10px',
+	        margin: '10px 10px',
 	        padding: '20px 0px',
 	        boxShadow: '1px 1px rgba(0, 0, 0, 0.3)',
 	        backgroundColor: '#FFFFFF'
@@ -39242,7 +39240,7 @@
 	            { className: 'row' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-xs-4 col-md-2' },
+	              { className: 'col-xs-5 col-md-2' },
 	              _react2.default.createElement(
 	                'div',
 	                { style: _MapMenu_styles.mapMenuStyle },
@@ -39251,7 +39249,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-xs-8 col-md-10', style: { verticalAlign: 'middle', height: '50px', lineHeight: '50px' } },
+	              { className: 'col-xs-7 col-md-10', style: { verticalAlign: 'middle', height: '50px', lineHeight: '50px' } },
 	              _react2.default.createElement(
 	                'span',
 	                { style: _MapMenu_styles.mapMenuFontStyle },
@@ -39279,14 +39277,14 @@
 	                  _this2.props.getAllLocation();
 	                },
 	                style: { color: '#606060' } },
-	              _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '24px' })
+	              _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '18px' })
 	            ),
 	            _react2.default.createElement(
 	              'div',
 	              { style: menuPanelStyle },
 	              _react2.default.createElement(
 	                'div',
-	                { className: 'row' },
+	                { className: 'row', style: { padding: '0px 0px 0px 10px' } },
 	                categoryMenu
 	              )
 	            )
