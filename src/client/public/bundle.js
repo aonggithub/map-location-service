@@ -23956,7 +23956,7 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
-	          apiKeyParam: '',
+	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
 	          height: '80%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayCategoryMenu: this.props.displayCategoryMenu,
