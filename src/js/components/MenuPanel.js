@@ -12,7 +12,7 @@ class MenuPanel extends Component {
       cursor: 'pointer',
       float: 'left',
       textAlign: 'left',
-      padding: '0px 60px',
+      padding: '0px 0px 0px 30px',
       margin: '10px 0px'
     }
 
@@ -20,7 +20,7 @@ class MenuPanel extends Component {
       cursor: 'pointer',
       float: 'right',
       textAlign: 'left',
-      padding: '0px 60px',
+      padding: '0px 0px 0px 30px',
       margin: '10px 0px'
     }
 
@@ -37,10 +37,10 @@ class MenuPanel extends Component {
                 style={ (i%2==0) ?leftCatBtnStyle:rightCatBtnStyle }
                 className='col-xs-6 col-md-6'>
                 <div className='row'>
-                  <div className='col-xs-2 col-md-2'>
+                  <div className='col-xs-4 col-md-2'>
                     <div style={mapMenuStyle}><Glyphicon name={category.icon} size="20px"/></div>
                   </div>
-                  <div className='col-xs-6 col-md-6' style={{verticalAlign:'middle',height:'50px', lineHeight: '50px'}}>
+                  <div className='col-xs-8 col-md-10' style={{verticalAlign:'middle',height:'50px', lineHeight: '50px'}}>
                     <span style={mapMenuFontStyle}>{category.name}</span>
                   </div>
                 </div>

@@ -39209,7 +39209,7 @@
 	        cursor: 'pointer',
 	        float: 'left',
 	        textAlign: 'left',
-	        padding: '0px 60px',
+	        padding: '0px 0px 0px 30px',
 	        margin: '10px 0px'
 	      };
 	
@@ -39217,7 +39217,7 @@
 	        cursor: 'pointer',
 	        float: 'right',
 	        textAlign: 'left',
-	        padding: '0px 60px',
+	        padding: '0px 0px 0px 30px',
 	        margin: '10px 0px'
 	      };
 	
@@ -39242,7 +39242,7 @@
 	            { className: 'row' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-xs-2 col-md-2' },
+	              { className: 'col-xs-4 col-md-2' },
 	              _react2.default.createElement(
 	                'div',
 	                { style: _MapMenu_styles.mapMenuStyle },
@@ -39251,7 +39251,7 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-xs-6 col-md-6', style: { verticalAlign: 'middle', height: '50px', lineHeight: '50px' } },
+	              { className: 'col-xs-8 col-md-10', style: { verticalAlign: 'middle', height: '50px', lineHeight: '50px' } },
 	              _react2.default.createElement(
 	                'span',
 	                { style: _MapMenu_styles.mapMenuFontStyle },
