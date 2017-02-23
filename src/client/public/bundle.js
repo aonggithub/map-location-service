@@ -39208,32 +39208,61 @@
 	      var leftCatBtnStyle = {
 	        cursor: 'pointer',
 	        float: 'left',
-	        textAlign: 'center'
+	        textAlign: 'left',
+	        padding: '0px 60px',
+	        margin: '10px 0px'
 	      };
 	
 	      var rightCatBtnStyle = {
 	        cursor: 'pointer',
-	        float: 'right'
+	        float: 'right',
+	        textAlign: 'left',
+	        padding: '0px 60px',
+	        margin: '10px 0px'
 	      };
 	
-	      var categoryMenu = this.props.categories.map(function (category) {
+	      var menuPanelStyle = {
+	        width: '95%',
+	        margin: '20px 10px',
+	        padding: '20px 0px',
+	        boxShadow: '1px 1px rgba(0, 0, 0, 0.3)',
+	        backgroundColor: '#FFFFFF'
+	      };
+	
+	      var categoryMenu = this.props.categories.map(function (category, i) {
 	        return _react2.default.createElement(
 	          'div',
 	          { onClick: function onClick() {
 	              _this2.props.changeCategory('cat' + category.id);
-	            }, style: leftCatBtnStyle },
+	            },
+	            style: i % 2 == 0 ? leftCatBtnStyle : rightCatBtnStyle,
+	            className: 'col-xs-6 col-md-6' },
 	          _react2.default.createElement(
 	            'div',
-	            { style: _MapMenu_styles.mapMenuStyle },
-	            _react2.default.createElement(_Glyphicon2.default, { name: category.icon, size: '20px' })
-	          ),
-	          _react2.default.createElement(
-	            'span',
-	            { style: _MapMenu_styles.mapMenuFontStyle },
-	            category.name
+	            { className: 'row' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-2 col-md-2' },
+	              _react2.default.createElement(
+	                'div',
+	                { style: _MapMenu_styles.mapMenuStyle },
+	                _react2.default.createElement(_Glyphicon2.default, { name: category.icon, size: '20px' })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-6 col-md-6', style: { verticalAlign: 'middle', height: '50px', lineHeight: '50px' } },
+	              _react2.default.createElement(
+	                'span',
+	                { style: _MapMenu_styles.mapMenuFontStyle },
+	                category.name
+	              )
+	            )
 	          )
 	        );
 	      }, this);
+	
+	      categoryMenu.push(_react2.default.createElement('div', { style: { clear: 'both' } }));
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -39243,16 +39272,24 @@
 	          null,
 	          _react2.default.createElement(
 	            'div',
-	            { onClick: function onClick() {
-	                _this2.props.getAllLocation();
-	              },
-	              style: { padding: '10px 0px', textAlign: 'center' } },
-	            _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '18px' })
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { style: { width: '200px' } },
-	            categoryMenu
+	            { style: { padding: '5px 0px', textAlign: 'center', backgroundColor: '#F0F0F0' } },
+	            _react2.default.createElement(
+	              'div',
+	              { onClick: function onClick() {
+	                  _this2.props.getAllLocation();
+	                },
+	                style: { color: '#606060' } },
+	              _react2.default.createElement(_Glyphicon2.default, { name: 'map-marker', size: '24px' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { style: menuPanelStyle },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'row' },
+	                categoryMenu
+	              )
+	            )
 	          )
 	        ) : ''
 	      );
