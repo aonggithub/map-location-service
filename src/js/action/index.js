@@ -68,11 +68,17 @@ export const addServiceLoc = (text) => {
   }
 }
 
-
 export const displayCategoryMenu = (show) => {
   return {
       type: 'DISPLAY_CATEGORY_MENU',
       payload: {'displayCatMenu': show}
+  }
+}
+
+export const displayPOIPanel = (show) => {
+  return {
+      type: 'DISPLAY_POI_PANEL',
+      payload: {'displayPOIPanel': show}
   }
 }
 

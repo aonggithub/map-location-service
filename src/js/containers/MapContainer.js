@@ -7,6 +7,7 @@ import { getServiceLoc,
         changePOILocation,
         changeCategoryToDisplay,
         displayCategoryMenu,
+        displayPOIPanel,
         getCategories} from '../action';
 
 export class MapContainer extends Component {
@@ -23,7 +24,7 @@ export class MapContainer extends Component {
 
   initialCurrentPos(){
 
-    this.props.displayCategoryMenu(true);
+    this.props.displayCategoryMenu(false);
 
     // Initial Current position.
     if(navigator.geolocation){
@@ -50,20 +51,23 @@ export class MapContainer extends Component {
   }
   //AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0
   render(){
+    console.log("this.props.showCatMenu || this.props.showPOIPanel");
+    console.log(this.props.showCatMenu || this.props.showPOIPanel);
     return (
       <div>
         <MapPanel serviceLocations = {this.props.locations}
           apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
-          height = '80%'
+          height = {(this.props.showCatMenu || this.props.showPOIPanel)?'60%':'100%'}
           poiOnClick={this.props.changePOILocationDisplay}
           displayCategoryMenu={this.props.displayCategoryMenu}
+          displayPOIPanel={this.props.displayPOIPanel}
           center = {this.state.currentLocation}
           show= {this.state.currentLocation!=null}
           />
         <MenuPanel
           getAllLocation={this.props.loadServiceLoc}
           changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
-          show={this.props.displayCatMenu && this.state.currentLocation!=null}
+          show={this.props.showCatMenu && this.state.currentLocation!=null}
           categories={this.props.categories}
           />
       </div>
@@ -74,7 +78,8 @@ export class MapContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     locations: state.locations,
-    displayCatMenu: state.displayLayout.displayCatMenu,
+    showCatMenu: state.displayLayout.displayCatMenu,
+    showPOIPanel: state.displayLayout.displayPOIPanel,
     categories: state.categories
   }
 }
@@ -95,6 +100,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     displayCategoryMenu: (show) => {
       dispatch(displayCategoryMenu(show))
+    },
+    displayPOIPanel: (show) => {
+      dispatch(displayPOIPanel(show))
     },
     changeCategoryToDisplay: (category, currentLocation, radius) => {
       dispatch(changeCategoryToDisplay(category,currentLocation, radius))

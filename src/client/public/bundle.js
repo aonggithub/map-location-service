@@ -23920,7 +23920,7 @@
 	    value: function initialCurrentPos() {
 	      var _this2 = this;
 	
-	      this.props.displayCategoryMenu(true);
+	      this.props.displayCategoryMenu(false);
 	
 	      // Initial Current position.
 	      if (navigator.geolocation) {
@@ -23952,21 +23952,24 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log("this.props.showCatMenu || this.props.showPOIPanel");
+	      console.log(this.props.showCatMenu || this.props.showPOIPanel);
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
 	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
-	          height: '80%',
+	          height: this.props.showCatMenu || this.props.showPOIPanel ? '60%' : '100%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayCategoryMenu: this.props.displayCategoryMenu,
+	          displayPOIPanel: this.props.displayPOIPanel,
 	          center: this.state.currentLocation,
 	          show: this.state.currentLocation != null
 	        }),
 	        _react2.default.createElement(_MenuPanel2.default, {
 	          getAllLocation: this.props.loadServiceLoc,
 	          changeCategory: this.changeCategoryToDisplayBindingCurrentLocation.bind(this),
-	          show: this.props.displayCatMenu && this.state.currentLocation != null,
+	          show: this.props.showCatMenu && this.state.currentLocation != null,
 	          categories: this.props.categories
 	        })
 	      );
@@ -23979,7 +23982,8 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    locations: state.locations,
-	    displayCatMenu: state.displayLayout.displayCatMenu,
+	    showCatMenu: state.displayLayout.displayCatMenu,
+	    showPOIPanel: state.displayLayout.displayPOIPanel,
 	    categories: state.categories
 	  };
 	};
@@ -24000,6 +24004,9 @@
 	    },
 	    displayCategoryMenu: function displayCategoryMenu(show) {
 	      dispatch((0, _action.displayCategoryMenu)(show));
+	    },
+	    displayPOIPanel: function displayPOIPanel(show) {
+	      dispatch((0, _action.displayPOIPanel)(show));
 	    },
 	    changeCategoryToDisplay: function changeCategoryToDisplay(category, currentLocation, radius) {
 	      dispatch((0, _action.changeCategoryToDisplay)(category, currentLocation, radius));
@@ -24072,7 +24079,8 @@
 	          rated: place.rated,
 	          poiOnClick: _this2.props.poiOnClick,
 	          category: place.category,
-	          displayCategoryMenu: _this2.props.displayCategoryMenu
+	          displayCategoryMenu: _this2.props.displayCategoryMenu,
+	          displayPOIPanel: _this2.props.displayPOIPanel
 	        });
 	      }, this);
 	
@@ -24112,8 +24120,9 @@
 	            {
 	              center: this.props.center,
 	              defaultZoom: this.props.zoom,
-	              onClick: function onClick(obj) {
-	                _this2.props.displayCategoryMenu(true);
+	              onClick: function onClick() {
+	                _this2.props.displayCategoryMenu(false);
+	                _this2.props.displayPOIPanel(false);
 	              },
 	              onZoomAnimationStart: function onZoomAnimationStart(obj) {
 	                console.log("onZoomAnimationStart");
@@ -24163,6 +24172,7 @@
 	  height: _react.PropTypes.any,
 	  poiOnClick: _react.PropTypes.func,
 	  displayCategoryMenu: _react.PropTypes.func,
+	  displayPOIPanel: _react.PropTypes.func,
 	  show: _react.PropTypes.boolean
 	};
 	
@@ -27331,6 +27341,7 @@
 	          onClick: function onClick() {
 	            _this2.props.poiOnClick(_this2.props);
 	            _this2.props.displayCategoryMenu(false);
+	            _this2.props.displayPOIPanel(true);
 	          } },
 	        _react2.default.createElement(_Glyphicon2.default, { name: makerStyle.categoryIcon, size: this.props.category == '0' ? '35px' : '' }),
 	        makerStyle.img ? _react2.default.createElement('img', { src: makerStyle.img, style: { width: '50px' } }) : ''
@@ -27368,7 +27379,8 @@
 	  title: _react.PropTypes.string,
 	  rated: _react.PropTypes.number,
 	  category: _react.PropTypes.string,
-	  displayCategoryMenu: _react.PropTypes.func
+	  displayCategoryMenu: _react.PropTypes.func,
+	  displayPOIPanel: _react.PropTypes.func
 	};
 	
 	MapMaker.defaultProps = {};
@@ -27433,11 +27445,12 @@
 	        zIndex: '9998',
 	        position: 'relative',
 	        bottom: '100px',
-	        left: '20px'
+	        left: '20px',
+	        width: '56px'
 	      };
 	
 	      var buttonStyle = {
-	        marginRight: 20
+	        // marginRight: 20
 	      };
 	
 	      return _react2.default.createElement(
@@ -39227,6 +39240,8 @@
 	        backgroundColor: '#FFFFFF'
 	      };
 	
+	      console.log("Menu Panel");
+	      console.log(this.props.show);
 	      var categoryMenu = this.props.categories.map(function (category, i) {
 	        return _react2.default.createElement(
 	          'div',
@@ -39320,7 +39335,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.changeCategoryToDisplay = exports.getNearbyServiceLoc = exports.getCategories = exports.getServiceLoc = exports.changePOILocation = exports.displayCategoryMenu = exports.addServiceLoc = undefined;
+	exports.changeCategoryToDisplay = exports.getNearbyServiceLoc = exports.getCategories = exports.getServiceLoc = exports.changePOILocation = exports.displayPOIPanel = exports.displayCategoryMenu = exports.addServiceLoc = undefined;
 	
 	var _axios = __webpack_require__(/*! axios */ 426);
 	
@@ -39393,6 +39408,13 @@
 	  return {
 	    type: 'DISPLAY_CATEGORY_MENU',
 	    payload: { 'displayCatMenu': show }
+	  };
+	};
+	
+	var displayPOIPanel = exports.displayPOIPanel = function displayPOIPanel(show) {
+	  return {
+	    type: 'DISPLAY_POI_PANEL',
+	    payload: { 'displayPOIPanel': show }
 	  };
 	};
 	
@@ -41175,7 +41197,7 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    poiLocation: state.poiLocation,
-	    displayPOIPanel: !state.displayLayout.displayCatMenu
+	    displayPOIPanel: state.displayLayout.displayPOIPanel
 	  };
 	};
 	
@@ -41426,7 +41448,9 @@
 	
 	  switch (action.type) {
 	    case 'DISPLAY_CATEGORY_MENU':
-	      return action.payload;
+	      return Object.assign({}, state, action.payload);
+	    case 'DISPLAY_POI_PANEL':
+	      return Object.assign({}, state, action.payload);
 	    default:
 	      return state;
 	  }

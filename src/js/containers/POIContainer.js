@@ -25,7 +25,7 @@ export class POIContainer extends Component {
 const mapStateToProps = (state) => {
   return {
     poiLocation: state.poiLocation,
-    displayPOIPanel: !state.displayLayout.displayCatMenu
+    displayPOIPanel: state.displayLayout.displayPOIPanel
   }
 }
 

@@ -20,6 +20,7 @@ class MapPanel extends Component {
                       poiOnClick={this.props.poiOnClick}
                       category={place.category}
                       displayCategoryMenu={this.props.displayCategoryMenu}
+                      displayPOIPanel={this.props.displayPOIPanel}
                       />
                   }, this);
 
@@ -56,7 +57,10 @@ class MapPanel extends Component {
             <GoogleMap
               center={this.props.center}
               defaultZoom={this.props.zoom}
-              onClick={(obj) => {this.props.displayCategoryMenu(true)}}
+              onClick={()=>{
+                this.props.displayCategoryMenu(false);
+                this.props.displayPOIPanel(false);
+              }}
               onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
               bootstrapURLKeys={{key: this.props.apiKeyParam}}
               onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
@@ -91,6 +95,7 @@ MapPanel.propTypes = {
   height: PropTypes.any,
   poiOnClick: PropTypes.func,
   displayCategoryMenu: PropTypes.func,
+  displayPOIPanel: PropTypes.func,
   show: PropTypes.boolean
 }
 

@@ -14,11 +14,12 @@ class MenuButton extends Component {
       zIndex: '9998',
       position: 'relative',
       bottom: '100px',
-      left: '20px'
+      left: '20px',
+      width: '56px'
     }
 
     const buttonStyle = {
-      marginRight: 20
+      // marginRight: 20
     };
 
     return (

@@ -30,6 +30,8 @@ class MenuPanel extends Component {
       backgroundColor: '#FFFFFF'
     }
 
+    console.log("Menu Panel")
+console.log(this.props.show);
     let categoryMenu = this.props.categories.map( (category, i) => {
       return <div onClick={() => {this.props.changeCategory('cat'+ category.id)}}
                 style={ (i%2==0) ?leftCatBtnStyle:rightCatBtnStyle }
