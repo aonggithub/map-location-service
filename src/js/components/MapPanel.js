@@ -19,7 +19,6 @@ class MapPanel extends Component {
                       rated= {place.rated}
                       poiOnClick={this.props.poiOnClick}
                       category={place.category}
-                      displayCategoryMenu={this.props.displayCategoryMenu}
                       displayPOIPanel={this.props.displayPOIPanel}
                       />
                   }, this);
@@ -45,6 +44,13 @@ class MapPanel extends Component {
                   }
     }
 
+    let customizedMapAPILoaded = function(map, maps){
+      maps.event.addListener(map, 'center_changed', function(event){
+        console.log("center_changed change");
+      });
+      console.log(maps);
+    }
+
     function refreshPage(e) {
       e.preventDefault();
       location.reload();
@@ -58,17 +64,15 @@ class MapPanel extends Component {
               center={this.props.center}
               defaultZoom={this.props.zoom}
               onClick={()=>{
-                this.props.displayCategoryMenu(false);
                 this.props.displayPOIPanel(false);
               }}
               onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
               bootstrapURLKeys={{key: this.props.apiKeyParam}}
-              onGoogleApiLoaded={({map, maps}) => console.log(map, maps)}
+              onGoogleApiLoaded={({map, maps}) => customizedMapAPILoaded(map, maps)}
               yesIWantToUseGoogleMapApiInternals={true}
               >
               {servicePlaces}
             </GoogleMap>
-            <MenuButton displayCategoryMenu={this.props.displayCategoryMenu}/>
           </div>
         :
         <div>
@@ -94,7 +98,6 @@ MapPanel.propTypes = {
   apiKeyParam: PropTypes.string,
   height: PropTypes.any,
   poiOnClick: PropTypes.func,
-  displayCategoryMenu: PropTypes.func,
   displayPOIPanel: PropTypes.func,
   show: PropTypes.boolean
 }

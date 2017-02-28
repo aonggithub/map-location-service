@@ -1,10 +1,22 @@
 import React, {PropTypes, Component } from 'react';
 import Glyphicon from './Glyphicon';
 import {mapMenuStyle, mapMenuFontStyle} from '../style/MapMenu_styles'
+import MenuButton from './MenuButton';
+import {Modal, Col, Row, Grid} from 'react-bootstrap';
 
 class MenuPanel extends Component {
   constructor (props, context) {
     super(props, context);
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
+  }
+
+  open(){
+    this.setState({showModal:true});
+  }
+
+  close(){
+    this.setState({showModal:false});
   }
 
   render() {
@@ -30,41 +42,48 @@ class MenuPanel extends Component {
       backgroundColor: '#FFFFFF'
     }
 
-    console.log("Menu Panel")
-console.log(this.props.show);
     let categoryMenu = this.props.categories.map( (category, i) => {
-      return <div onClick={() => {this.props.changeCategory('cat'+ category.id)}}
+      return <Col onClick={() => {
+                              this.props.changeCategory('cat'+ category.id)
+                              this.close();
+                            }
+                          }
                 style={ (i%2==0) ?leftCatBtnStyle:rightCatBtnStyle }
-                className='col-xs-6 col-md-6'>
-                <div className='row'>
-                  <div className='col-xs-5 col-md-2'>
+                xs={6} md={6}>
+                <Row>
+                  <Col xs={5} md={3}>
                     <div style={mapMenuStyle}><Glyphicon name={category.icon} size="20px"/></div>
-                  </div>
-                  <div className='col-xs-7 col-md-10' style={{verticalAlign:'middle',height:'50px', lineHeight: '50px'}}>
+                  </Col>
+                  <Col xs={7} md={8} style={{verticalAlign:'middle',height:'50px', lineHeight: '50px'}}>
                     <span style={mapMenuFontStyle}>{category.name}</span>
-                  </div>
-                </div>
-              </div>
+                  </Col>
+                </Row>
+              </Col>
           }, this);
 
     categoryMenu.push(<div style={{clear:'both'}}></div>);
 
+    const backdropStyle = {
+      zIndex: 11
+    }
+
     return (
       <div>
+        <MenuButton buttonFunc={this.open} />
         {this.props.show?
-          <div>
-            <div style={{padding: '5px 0px', textAlign: 'center', backgroundColor: '#F0F0F0'}}>
-              <div onClick={() => {this.props.getAllLocation()}}
-                style={{color: '#606060'}}>
-                <Glyphicon name="map-marker" size="18px"/>
-              </div>
-              <div style={menuPanelStyle}>
-                <div className='row' style={{padding: '0px 0px 0px 10px'}}>
-                  {categoryMenu}
+          <Modal show={this.state.showModal}
+            onHide={this.close}
+            backdropStyle={backdropStyle}>
+            <div>
+              <div style={{padding: '5px 0px', textAlign: 'center', backgroundColor: '#F0F0F0'}}>
+                <div style={menuPanelStyle}>
+                  <Row style={{padding: '0px 0px 0px 10px'}}>
+                    {categoryMenu}
+                  </Row>
                 </div>
               </div>
             </div>
-          </div>
+          </Modal>
           :''
         }
       </div>

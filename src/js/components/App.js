@@ -1,6 +1,7 @@
 import React from 'react'
 import MapContainer from '../containers/MapContainer'
 import POIContainer from '../containers/POIContainer'
+import TestModal from '../testComponent/TestModal'
 
 const App = () => (
   <div>

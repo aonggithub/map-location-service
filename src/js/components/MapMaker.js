@@ -24,7 +24,6 @@ class MapMaker extends Component {
        <div style={makerStyle.style}
             onClick={() => {
               this.props.poiOnClick(this.props);
-              this.props.displayCategoryMenu(false);
               this.props.displayPOIPanel(true);
             }}>
           <Glyphicon name={makerStyle.categoryIcon} size={this.props.category=='0'?'35px':''}/>
@@ -60,7 +59,6 @@ MapMaker.propTypes = {
   title: PropTypes.string,
   rated: PropTypes.number,
   category: PropTypes.string,
-  displayCategoryMenu: PropTypes.func,
   displayPOIPanel: PropTypes.func
 }
 

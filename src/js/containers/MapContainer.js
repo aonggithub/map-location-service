@@ -47,19 +47,17 @@ export class MapContainer extends Component {
 
   // This method is created for manual binding current location and radius
   changeCategoryToDisplayBindingCurrentLocation(category){
-    this.props.changeCategoryToDisplay(category, this.state.currentLocation, this.state.radius)
+    this.props.changeCategoryToDisplay(category, this.state.currentLocation, 2);
+    this.props.displayPOIPanel(false);
   }
   //AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0
   render(){
-    console.log("this.props.showCatMenu || this.props.showPOIPanel");
-    console.log(this.props.showCatMenu || this.props.showPOIPanel);
     return (
       <div>
         <MapPanel serviceLocations = {this.props.locations}
           apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
-          height = {(this.props.showCatMenu || this.props.showPOIPanel)?'60%':'100%'}
+          height = {(this.props.showPOIPanel)?'60%':'100%'}
           poiOnClick={this.props.changePOILocationDisplay}
-          displayCategoryMenu={this.props.displayCategoryMenu}
           displayPOIPanel={this.props.displayPOIPanel}
           center = {this.state.currentLocation}
           show= {this.state.currentLocation!=null}
@@ -67,7 +65,7 @@ export class MapContainer extends Component {
         <MenuPanel
           getAllLocation={this.props.loadServiceLoc}
           changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
-          show={this.props.showCatMenu && this.state.currentLocation!=null}
+          show={this.state.currentLocation!=null}
           categories={this.props.categories}
           />
       </div>
