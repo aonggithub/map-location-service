@@ -14,6 +14,7 @@ class MenuPanel extends Component {
 
   open(){
     this.setState({showModal:true});
+    this.props.displayPOIPanel(false);
   }
 
   close(){
@@ -21,27 +22,16 @@ class MenuPanel extends Component {
   }
 
   render() {
-    const leftCatBtnStyle = {
+    let leftCatBtnStyle = {
       cursor: 'pointer',
       float: 'left',
       textAlign: 'left',
-      margin: '10px 0px'
+      margin: '10px 0px',
+      padding: '10px'
     }
 
-    const rightCatBtnStyle = {
-      cursor: 'pointer',
-      float: 'right',
-      textAlign: 'left',
-      margin: '10px 0px'
-    }
-
-    const menuPanelStyle = {
-      width:'95%',
-      margin: '10px 10px',
-      padding: '20px 0px',
-      boxShadow: '1px 1px rgba(0, 0, 0, 0.3)',
-      backgroundColor: '#FFFFFF'
-    }
+    let rightCatBtnStyle = Object.assign({}, leftCatBtnStyle);
+    rightCatBtnStyle.float = 'right';
 
     let categoryMenu = this.props.categories.map( (category, i) => {
       return <Col onClick={() => {
@@ -75,15 +65,9 @@ class MenuPanel extends Component {
           <Modal show={this.state.showModal}
             onHide={this.close}
             backdropStyle={backdropStyle}>
-            <div>
-              <div style={{padding: '5px 0px', textAlign: 'center', backgroundColor: '#F0F0F0'}}>
-                <div style={menuPanelStyle}>
-                  <Row style={{padding: '0px 0px 0px 10px'}}>
-                    {categoryMenu}
-                  </Row>
-                </div>
-              </div>
-            </div>
+            <Row>
+              {categoryMenu}
+            </Row>
           </Modal>
           :''}
       </div>
@@ -94,7 +78,8 @@ class MenuPanel extends Component {
 MenuPanel.propTypes = {
   changeCategory: PropTypes.func,
   categories: PropTypes.any,
-  show: PropTypes.boolean
+  show: PropTypes.boolean,
+  displayPOIPanel: PropTypes.func
 }
 
 MenuPanel.defaultProps = {

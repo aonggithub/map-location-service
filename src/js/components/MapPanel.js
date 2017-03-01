@@ -77,6 +77,7 @@ class MapPanel extends Component {
               changeCategory={this.props.changeCategory}
               show={this.props.center!=null}
               categories={this.props.categories}
+              displayPOIPanel = {this.props.displayPOIPanel}
               />
           </div>
         :

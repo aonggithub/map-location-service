@@ -24142,7 +24142,8 @@
 	          _react2.default.createElement(_MenuPanel2.default, {
 	            changeCategory: this.props.changeCategory,
 	            show: this.props.center != null,
-	            categories: this.props.categories
+	            categories: this.props.categories,
+	            displayPOIPanel: this.props.displayPOIPanel
 	          })
 	        ) : _react2.default.createElement(
 	          'div',
@@ -39339,6 +39340,7 @@
 	    key: 'open',
 	    value: function open() {
 	      this.setState({ showModal: true });
+	      this.props.displayPOIPanel(false);
 	    }
 	  }, {
 	    key: 'close',
@@ -39354,23 +39356,12 @@
 	        cursor: 'pointer',
 	        float: 'left',
 	        textAlign: 'left',
-	        margin: '10px 0px'
+	        margin: '10px 0px',
+	        padding: '10px'
 	      };
 	
-	      var rightCatBtnStyle = {
-	        cursor: 'pointer',
-	        float: 'right',
-	        textAlign: 'left',
-	        margin: '10px 0px'
-	      };
-	
-	      var menuPanelStyle = {
-	        width: '95%',
-	        margin: '10px 10px',
-	        padding: '20px 0px',
-	        boxShadow: '1px 1px rgba(0, 0, 0, 0.3)',
-	        backgroundColor: '#FFFFFF'
-	      };
+	      var rightCatBtnStyle = Object.assign({}, leftCatBtnStyle);
+	      rightCatBtnStyle.float = 'right';
 	
 	      var categoryMenu = this.props.categories.map(function (category, i) {
 	        return _react2.default.createElement(
@@ -39422,21 +39413,9 @@
 	            onHide: this.close,
 	            backdropStyle: backdropStyle },
 	          _react2.default.createElement(
-	            'div',
+	            _reactBootstrap.Row,
 	            null,
-	            _react2.default.createElement(
-	              'div',
-	              { style: { padding: '5px 0px', textAlign: 'center', backgroundColor: '#F0F0F0' } },
-	              _react2.default.createElement(
-	                'div',
-	                { style: menuPanelStyle },
-	                _react2.default.createElement(
-	                  _reactBootstrap.Row,
-	                  { style: { padding: '0px 0px 0px 10px' } },
-	                  categoryMenu
-	                )
-	              )
-	            )
+	            categoryMenu
 	          )
 	        ) : ''
 	      );
@@ -39449,7 +39428,8 @@
 	MenuPanel.propTypes = {
 	  changeCategory: _react.PropTypes.func,
 	  categories: _react.PropTypes.any,
-	  show: _react.PropTypes.boolean
+	  show: _react.PropTypes.boolean,
+	  displayPOIPanel: _react.PropTypes.func
 	};
 	
 	MenuPanel.defaultProps = {};
