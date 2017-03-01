@@ -59348,9 +59348,9 @@
 	    value: function render() {
 	      var ratedStyle = {
 	        fontWeight: 'normal',
-	        color: '#FF4B0A',
-	        fontFamily: 'Roboto,sans-serif',
-	        fontSize: '16px'
+	        color: 'rgb(66, 127, 237)',
+	        fontFamily: 'Roboto,Arial',
+	        fontSize: '13px'
 	      };
 	      var linkStyle = Object.assign({}, ratedStyle);
 	      linkStyle.color = '#039BE5';
@@ -59377,7 +59377,7 @@
 	              { className: 'col-xs-8 col-md-6' },
 	              _react2.default.createElement(
 	                'div',
-	                { style: { fontFamily: 'Roboto,sans-serif', fontSize: '16px', padding: '10px 0px' } },
+	                { style: { fontFamily: 'Roboto,Arial', fontSize: '14px', padding: '10px 0px' } },
 	                _react2.default.createElement(
 	                  'span',
 	                  { style: { fontWeight: 'bold' } },
@@ -59403,7 +59403,7 @@
 	                  _react2.default.createElement(
 	                    'a',
 	                    { href: linktoGoogleMap },
-	                    'Get direction'
+	                    'View on Google Maps'
 	                  )
 	                )
 	              )

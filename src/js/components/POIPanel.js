@@ -8,9 +8,9 @@ class POIPanel extends Component {
   render() {
     let ratedStyle = {
       fontWeight:'normal',
-      color: '#FF4B0A',
-      fontFamily:'Roboto,sans-serif',
-      fontSize:'16px'
+      color: 'rgb(66, 127, 237)',
+      fontFamily:'Roboto,Arial',
+      fontSize:'13px'
     }
     let linkStyle = Object.assign({}, ratedStyle);
     linkStyle.color='#039BE5';
@@ -30,7 +30,7 @@ class POIPanel extends Component {
                   <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
               </div>
               <div className='col-xs-8 col-md-6'>
-                <div style={{fontFamily:'Roboto,sans-serif', fontSize:'16px', padding: '10px 0px'}}>
+                <div style={{fontFamily:'Roboto,Arial', fontSize:'14px', padding: '10px 0px'}}>
                   <span style={{fontWeight: 'bold'}}>{this.props.poiLocation.title}</span>
                 </div>
                 <div style={{padding: '5px 0px'}}>
@@ -40,7 +40,7 @@ class POIPanel extends Component {
                 </div>
                 <div style={{padding: '5px 0px'}}>
                   <span style={linkStyle}>
-                    <a href={linktoGoogleMap}>Get direction</a>
+                    <a href={linktoGoogleMap}>View on Google Maps</a>
                   </span>
                 </div>
               </div>
