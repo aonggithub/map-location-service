@@ -10,16 +10,18 @@ class MenuButton extends Component {
 
   render() {
 
-    const divButtonStyle = {
+    let divButtonStyle = {
       zIndex: '10',
       position: 'relative',
       bottom: '100px',
       left: '20px',
-      width: '56px'
+      width: '56px',
+      height: '0px'
     }
 
     const buttonStyle = {
       // marginRight: 20
+      position: 'relative'
     };
 
     return (

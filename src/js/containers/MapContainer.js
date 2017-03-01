@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import MapPanel from '../components/MapPanel';
-import MenuPanel from '../components/MenuPanel';
 import { connect } from 'react-redux';
 import { getServiceLoc,
         getNearbyServiceLoc,
@@ -56,16 +55,12 @@ export class MapContainer extends Component {
       <div>
         <MapPanel serviceLocations = {this.props.locations}
           apiKeyParam = {'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0'}
-          height = {(this.props.showPOIPanel)?'60%':'100%'}
+          height = {(this.props.showPOIPanel)?'75%':'100%'}
           poiOnClick={this.props.changePOILocationDisplay}
           displayPOIPanel={this.props.displayPOIPanel}
           center = {this.state.currentLocation}
           show= {this.state.currentLocation!=null}
-          />
-        <MenuPanel
-          getAllLocation={this.props.loadServiceLoc}
           changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
-          show={this.state.currentLocation!=null}
           categories={this.props.categories}
           />
       </div>

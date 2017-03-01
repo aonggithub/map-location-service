@@ -2,6 +2,7 @@ import React, {PropTypes, Component } from 'react';
 import GoogleMap, {GoogleMapMarkers} from 'google-map-react';
 import MapMaker from './MapMaker';
 import MenuButton from './MenuButton';
+import MenuPanel from './MenuPanel';
 
 class MapPanel extends Component {
   constructor (props, context) {
@@ -48,7 +49,6 @@ class MapPanel extends Component {
       maps.event.addListener(map, 'center_changed', function(event){
         console.log("center_changed change");
       });
-      console.log(maps);
     }
 
     function refreshPage(e) {
@@ -73,6 +73,11 @@ class MapPanel extends Component {
               >
               {servicePlaces}
             </GoogleMap>
+            <MenuPanel
+              changeCategory={this.props.changeCategory}
+              show={this.props.center!=null}
+              categories={this.props.categories}
+              />
           </div>
         :
         <div>
@@ -99,7 +104,9 @@ MapPanel.propTypes = {
   height: PropTypes.any,
   poiOnClick: PropTypes.func,
   displayPOIPanel: PropTypes.func,
-  show: PropTypes.boolean
+  show: PropTypes.boolean,
+  changeCategory: PropTypes.func,
+  categories: PropTypes.any
 }
 
 MapPanel.defaultProps = {

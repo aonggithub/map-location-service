@@ -23884,10 +23884,6 @@
 	
 	var _MapPanel2 = _interopRequireDefault(_MapPanel);
 	
-	var _MenuPanel = __webpack_require__(/*! ../components/MenuPanel */ 425);
-	
-	var _MenuPanel2 = _interopRequireDefault(_MenuPanel);
-	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 172);
 	
 	var _action = __webpack_require__(/*! ../action */ 598);
@@ -23962,16 +23958,12 @@
 	        null,
 	        _react2.default.createElement(_MapPanel2.default, { serviceLocations: this.props.locations,
 	          apiKeyParam: 'AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0',
-	          height: this.props.showPOIPanel ? '60%' : '100%',
+	          height: this.props.showPOIPanel ? '75%' : '100%',
 	          poiOnClick: this.props.changePOILocationDisplay,
 	          displayPOIPanel: this.props.displayPOIPanel,
 	          center: this.state.currentLocation,
-	          show: this.state.currentLocation != null
-	        }),
-	        _react2.default.createElement(_MenuPanel2.default, {
-	          getAllLocation: this.props.loadServiceLoc,
-	          changeCategory: this.changeCategoryToDisplayBindingCurrentLocation.bind(this),
 	          show: this.state.currentLocation != null,
+	          changeCategory: this.changeCategoryToDisplayBindingCurrentLocation.bind(this),
 	          categories: this.props.categories
 	        })
 	      );
@@ -24049,6 +24041,10 @@
 	
 	var _MenuButton2 = _interopRequireDefault(_MenuButton);
 	
+	var _MenuPanel = __webpack_require__(/*! ./MenuPanel */ 425);
+	
+	var _MenuPanel2 = _interopRequireDefault(_MenuPanel);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24109,7 +24105,6 @@
 	        maps.event.addListener(map, 'center_changed', function (event) {
 	          console.log("center_changed change");
 	        });
-	        console.log(maps);
 	      };
 	
 	      function refreshPage(e) {
@@ -24143,7 +24138,12 @@
 	              yesIWantToUseGoogleMapApiInternals: true
 	            },
 	            servicePlaces
-	          )
+	          ),
+	          _react2.default.createElement(_MenuPanel2.default, {
+	            changeCategory: this.props.changeCategory,
+	            show: this.props.center != null,
+	            categories: this.props.categories
+	          })
 	        ) : _react2.default.createElement(
 	          'div',
 	          null,
@@ -24178,7 +24178,9 @@
 	  height: _react.PropTypes.any,
 	  poiOnClick: _react.PropTypes.func,
 	  displayPOIPanel: _react.PropTypes.func,
-	  show: _react.PropTypes.boolean
+	  show: _react.PropTypes.boolean,
+	  changeCategory: _react.PropTypes.func,
+	  categories: _react.PropTypes.any
 	};
 	
 	MapPanel.defaultProps = {
@@ -27553,11 +27555,13 @@
 	        position: 'relative',
 	        bottom: '100px',
 	        left: '20px',
-	        width: '56px'
+	        width: '56px',
+	        height: '0px'
 	      };
 	
 	      var buttonStyle = {
 	        // marginRight: 20
+	        position: 'relative'
 	      };
 	
 	      return _react2.default.createElement(
@@ -39325,6 +39329,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (MenuPanel.__proto__ || Object.getPrototypeOf(MenuPanel)).call(this, props, context));
 	
+	    _this.state = { showModal: false };
 	    _this.open = _this.open.bind(_this);
 	    _this.close = _this.close.bind(_this);
 	    return _this;
@@ -39443,7 +39448,6 @@
 	
 	MenuPanel.propTypes = {
 	  changeCategory: _react.PropTypes.func,
-	  getAllLocation: _react.PropTypes.func,
 	  categories: _react.PropTypes.any,
 	  show: _react.PropTypes.boolean
 	};

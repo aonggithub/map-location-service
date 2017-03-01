@@ -7,6 +7,7 @@ import {Modal, Col, Row, Grid} from 'react-bootstrap';
 class MenuPanel extends Component {
   constructor (props, context) {
     super(props, context);
+    this.state = {showModal:false};
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
   }
@@ -84,8 +85,7 @@ class MenuPanel extends Component {
               </div>
             </div>
           </Modal>
-          :''
-        }
+          :''}
       </div>
     )
   }
@@ -93,7 +93,6 @@ class MenuPanel extends Component {
 
 MenuPanel.propTypes = {
   changeCategory: PropTypes.func,
-  getAllLocation: PropTypes.func,
   categories: PropTypes.any,
   show: PropTypes.boolean
 }
