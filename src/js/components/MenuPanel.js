@@ -64,7 +64,8 @@ class MenuPanel extends Component {
         {this.props.show?
           <Modal show={this.state.showModal}
             onHide={this.close}
-            backdropStyle={backdropStyle}>
+            backdropStyle={backdropStyle}
+            style={{marginTop:'70px'}}>
             <Row>
               {categoryMenu}
             </Row>
