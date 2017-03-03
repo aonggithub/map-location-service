@@ -14,7 +14,7 @@ class AppBarMap extends Component {
         <AppBar
            title="Location Map"
            iconClassNameRight="muidocs-icon-navigation-expand-more"
-           style={{backgroundColor: 'rgb(30, 136, 229)', fontSize:'14px'}}
+           style={{backgroundColor: 'rgb(30, 136, 229)', fontSize:'18px'}}
          />
         </MuiThemeProvider>
       </div>
