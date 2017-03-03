@@ -11,6 +11,13 @@ import createLogger from 'redux-logger'
 const logger = createLogger()
 let store = createStore(mapApp, applyMiddleware(thunk, promise, logger))
 
+// Add service worker
+if ('serviceWorker' in navigator) {
+ navigator.serviceWorker
+          .register('service-worker.js')
+          .then(function() { console.log('Service Worker Registered'); }).catch(function(error){console.log(error)});
+}
+
 render(
   <Provider store={store}>
     <App />

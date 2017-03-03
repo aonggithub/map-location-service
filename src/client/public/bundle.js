@@ -84,6 +84,15 @@
 	var logger = (0, _reduxLogger2.default)();
 	var store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, _reduxPromise2.default, logger));
 	
+	// Add service worker
+	if ('serviceWorker' in navigator) {
+	  navigator.serviceWorker.register('service-worker.js').then(function () {
+	    console.log('Service Worker Registered');
+	  }).catch(function (error) {
+	    console.log(error);
+	  });
+	}
+	
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
