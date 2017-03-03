@@ -1,6 +1,6 @@
 var cacheName = 'weatherPWA-step-6-1';
 var filesToCache = [
-  '/',
+  '/js/',
   '/js/index.html',
   '/client/public/bundle.js'
 ];
