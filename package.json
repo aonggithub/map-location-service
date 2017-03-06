@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "devBak": "concurrently \"webpack -d --watch --config webpack.config.js\" \"nodemon src/server/index.js\"",
-    "dev": "concurrently \"webpack-dev-server --hot --inline --port 8081 --content-base src/client/public/\" \"nodemon src/server/index.js\"",
+    "dev": "concurrently \"webpack-dev-server --hot --inline --port 8081 --content-base src/\" \"nodemon src/server/index.js\"",
     "build": "webpack -p --config webpack.config.prod.js"
   },
   "author": "",

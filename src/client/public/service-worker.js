@@ -1,8 +1,8 @@
 var cacheName = 'weatherPWA-step-6-1';
 var filesToCache = [
-  '/',
-  '/index.html',
-  '/bundle.js'
+  '/client/public/',
+  '/client/public/index.html',
+  '/client/public/bundle.js'
 ];
 
 self.addEventListener('install', function(e) {
