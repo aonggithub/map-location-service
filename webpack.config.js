@@ -8,15 +8,18 @@ var config = {
   entry: APP_DIR + '/index.js',
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: "/"
   },
   externals: {
-      'ClientConfig': JSON.stringify(require('./config/dev.config.json'))
-    },
+    'ClientConfig': JSON.stringify(require('./config/dev.config.json'))
+  },
+  devServer: { inline: true },
   module : {
     loaders : [
       {
         test : /\.js?/,
+        exclude: /node_modules/,
         include : APP_DIR,
         loader : 'babel'
       }
