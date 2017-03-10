@@ -1,7 +1,6 @@
 import React, {PropTypes, Component } from 'react';
 import GoogleMap, {GoogleMapMarkers} from 'google-map-react';
 import MapMaker from './MapMaker';
-import MenuButton from './MenuButton';
 import MenuPanel from './MenuPanel';
 
 class MapPanel extends Component {
@@ -63,8 +62,9 @@ class MapPanel extends Component {
             <GoogleMap
               center={this.props.center}
               defaultZoom={this.props.zoom}
-              onClick={()=>{
+              onClick={(obj)=>{
                 this.props.displayPOIPanel(false);
+                console.log(obj);
               }}
               onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
               bootstrapURLKeys={{key: this.props.apiKeyParam}}
@@ -73,6 +73,7 @@ class MapPanel extends Component {
               >
               {servicePlaces}
             </GoogleMap>
+            
             <MenuPanel
               changeCategory={this.props.changeCategory}
               show={this.props.center!=null}

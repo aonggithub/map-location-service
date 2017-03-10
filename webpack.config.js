@@ -9,7 +9,7 @@ var config = {
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js',
-    publicPath: "/"
+    publicPath: "/js/"
   },
   externals: {
     'ClientConfig': JSON.stringify(require('./config/dev.config.json'))

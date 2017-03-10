@@ -8,6 +8,7 @@ import { getServiceLoc,
         displayCategoryMenu,
         displayPOIPanel,
         getCategories} from '../action';
+import GPSFixedButton from '../components/GPSFixedButton';
 
 export class MapContainer extends Component {
   constructor (props, context) {
@@ -49,6 +50,14 @@ export class MapContainer extends Component {
     this.props.changeCategoryToDisplay(category, this.state.currentLocation, 2);
     this.props.displayPOIPanel(false);
   }
+
+  gotoCurrentPosition(){
+    console.log("gotoCurrentPosition");
+    console.log(this.state);
+  //  var currentLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
+  //  this.setState({currentLocation});
+  }
+
   //AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0
   render(){
     return (
@@ -63,6 +72,7 @@ export class MapContainer extends Component {
           changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
           categories={this.props.categories}
           />
+        <GPSFixedButton buttonFunc={this.gotoCurrentPosition.bind(this)}/>
       </div>
     )
   }

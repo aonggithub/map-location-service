@@ -27,7 +27,7 @@ class POIPanel extends Component {
           <div style={{height: this.props.height}}>
             <div className='row'>
               <div className='col-xs-4 col-md-2'>
-                  <img src="../img/photo-album-icon-png-14.png" height='100%'></img>
+                  <img src="../../img/photo-album-icon-png-14.png" height='100%'></img>
               </div>
               <div className='col-xs-8 col-md-6'>
                 <div style={{fontFamily:'Roboto,Arial', fontSize:'14px', padding: '10px 0px'}}>
