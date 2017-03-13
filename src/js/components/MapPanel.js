@@ -1,17 +1,29 @@
 import React, {PropTypes, Component } from 'react';
 import GoogleMap, {GoogleMapMarkers} from 'google-map-react';
 import MapMaker from './MapMaker';
-import MenuPanel from './MenuPanel';
+import GPSFixedButton from './GPSFixedButton';
 
 class MapPanel extends Component {
   constructor (props, context) {
     super(props, context);
+    this.state = {maps: null, map: null};
+    this.setMapToState = this.setMapToState.bind(this);
+    this.gotoCenter = this.gotoCenter.bind(this);
+  }
+
+  setMapToState(map, maps){
+    this.setState({
+      maps: maps,
+      map: map
+    });
+  }
+
+  gotoCenter(){
+    this.state.map.panTo(this.props.center);
   }
 
   render() {
     let servicePlaces = this.props.serviceLocations.map( place => {
-      // const {id, ...coords} = place;
-      // return ({key:id, ...coords});
       return <MapMaker text={place.name}
                       lat={place.lat}
                       lng={place.lng}
@@ -36,18 +48,12 @@ class MapPanel extends Component {
 
 
     let createMapOptions= function (maps) {
-                  return {
-                    panControl: false,
-                    mapTypeControl: false,
-                    scrollwheel: false,
-                    styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
-                  }
-    }
-
-    let customizedMapAPILoaded = function(map, maps){
-      maps.event.addListener(map, 'center_changed', function(event){
-        console.log("center_changed change");
-      });
+      return {
+        panControl: false,
+        mapTypeControl: false,
+        scrollwheel: false,
+        styles: [{ stylers: [{ 'saturation': -100 }, { 'gamma': 0.8 }, { 'lightness': 4 }, { 'visibility': 'on' }] }]
+      }
     }
 
     function refreshPage(e) {
@@ -68,18 +74,14 @@ class MapPanel extends Component {
               }}
               onZoomAnimationStart ={(obj) => { console.log("onZoomAnimationStart") }}
               bootstrapURLKeys={{key: this.props.apiKeyParam}}
-              onGoogleApiLoaded={({map, maps}) => customizedMapAPILoaded(map, maps)}
+              onGoogleApiLoaded={({map, maps}) => {
+                  this.setMapToState(map, maps);
+                  }}
               yesIWantToUseGoogleMapApiInternals={true}
               >
               {servicePlaces}
             </GoogleMap>
-            
-            <MenuPanel
-              changeCategory={this.props.changeCategory}
-              show={this.props.center!=null}
-              categories={this.props.categories}
-              displayPOIPanel = {this.props.displayPOIPanel}
-              />
+            <GPSFixedButton buttonFunc={this.gotoCenter}/>
           </div>
         :
         <div>
@@ -106,9 +108,7 @@ MapPanel.propTypes = {
   height: PropTypes.any,
   poiOnClick: PropTypes.func,
   displayPOIPanel: PropTypes.func,
-  show: PropTypes.boolean,
-  changeCategory: PropTypes.func,
-  categories: PropTypes.any
+  show: PropTypes.boolean
 }
 
 MapPanel.defaultProps = {

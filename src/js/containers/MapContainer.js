@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MapPanel from '../components/MapPanel';
+import MenuPanel from '../components/MenuPanel';
 import { connect } from 'react-redux';
 import { getServiceLoc,
         getNearbyServiceLoc,
@@ -8,7 +9,6 @@ import { getServiceLoc,
         displayCategoryMenu,
         displayPOIPanel,
         getCategories} from '../action';
-import GPSFixedButton from '../components/GPSFixedButton';
 
 export class MapContainer extends Component {
   constructor (props, context) {
@@ -51,13 +51,6 @@ export class MapContainer extends Component {
     this.props.displayPOIPanel(false);
   }
 
-  gotoCurrentPosition(){
-    console.log("gotoCurrentPosition");
-    console.log(this.state);
-  //  var currentLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
-  //  this.setState({currentLocation});
-  }
-
   //AIzaSyAHVWzrqPTQRhBTAe6WuC-zNMB6LA708a0
   render(){
     return (
@@ -69,10 +62,13 @@ export class MapContainer extends Component {
           displayPOIPanel={this.props.displayPOIPanel}
           center = {this.state.currentLocation}
           show= {this.state.currentLocation!=null}
-          changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
-          categories={this.props.categories}
           />
-        <GPSFixedButton buttonFunc={this.gotoCurrentPosition.bind(this)}/>
+        <MenuPanel
+          changeCategory={this.changeCategoryToDisplayBindingCurrentLocation.bind(this)}
+          show={this.state.currentLocation != null}
+          categories={this.props.categories}
+          displayPOIPanel = {this.props.displayPOIPanel}
+          />
       </div>
     )
   }
