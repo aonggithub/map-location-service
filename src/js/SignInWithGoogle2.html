@@ -1,0 +1,42 @@
+<html>
+<head>
+  <meta name="google-signin-client_id" content="223799517184-ol45hi3800k1a0psres5f1iklpa7vngu.apps.googleusercontent.com">
+</head>
+<body>
+  <div id="my-signin2"></div>
+  <script>
+    function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+
+    function checkGoogleInfo(){
+        gapi.load('auth2', function(){
+          gapi.auth2.init();
+          var auth2 = gapi.auth2.getAuthInstance();
+          console.log(auth2.isSignedIn);
+          if (auth2.isSignedIn.get()) {
+            console.log("google has sign in")
+          }
+        });
+    }
+
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+  <a href="#" onClick="checkGoogleInfo()">checkGoogleInfo</a>
+</body>
+</html>

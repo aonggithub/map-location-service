@@ -60,16 +60,19 @@ class MenuPanel extends Component {
 
     return (
       <div>
-        <MenuButton buttonFunc={this.open} />
+
         {this.props.show?
-          <Modal show={this.state.showModal}
-            onHide={this.close}
-            backdropStyle={backdropStyle}
-            style={{marginTop:'70px'}}>
-            <Row>
-              {categoryMenu}
-            </Row>
-          </Modal>
+          <div>
+            <MenuButton buttonFunc={this.open} />
+            <Modal show={this.state.showModal}
+              onHide={this.close}
+              backdropStyle={backdropStyle}
+              style={{marginTop:'70px'}}>
+              <Row>
+                {categoryMenu}
+              </Row>
+            </Modal>
+          </div>
           :''}
       </div>
     )
