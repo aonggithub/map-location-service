@@ -45,6 +45,7 @@ class AppBarMap extends Component {
     // Set signedin with google flag
     if (typeof(Storage) !== "undefined") {
       localStorage.setItem("isSignedInWithGoogle", "true");
+      localStorage.setItem("googleIdToken", googleUser.getAuthResponse().id_token);
     } else {
       console.log("Sorry! No Web Storage support");
     }
@@ -63,15 +64,19 @@ class AppBarMap extends Component {
   }
 
   render() {
+    const headerButtonStyle = {'color': 'rgb(217, 217, 217)',
+                                'borderStyle':'solid',
+                                'borderWidth':'1px',
+                                'borderColor':'rgb(217, 217, 217)'}
     const loginFlatButton = <FlatButton label="Log in"
-                              style={{'color': 'rgb(217, 217, 217)'}}
+                              style={headerButtonStyle}
                               onClick={ e=> {
                                 e.preventDefault();
                                 this.showLoginPopup();
                               }}/>
 
     const signOutButton = <FlatButton label="Sign out"
-                              style={{'color': 'rgb(217, 217, 217)'}}
+                              style={headerButtonStyle}
                               onClick={ e=> {
                                 e.preventDefault();
                                 signOut();
@@ -91,6 +96,7 @@ class AppBarMap extends Component {
       auth2.signOut().then(function () {
         console.log('User signed out.');
         localStorage.removeItem("isSignedInWithGoogle");
+        localStorage.removeItem("googleIdToken");
       });
     }
 
@@ -116,7 +122,7 @@ class AppBarMap extends Component {
                ?<IconButton><MenuNavigation/></IconButton>
                :<IconButton><CloseNavigation/></IconButton>}
              iconElementRight={this.state.isLoggedin ? signOutButton : loginFlatButton}
-             style={{backgroundColor: 'rgb(30, 136, 229)'}}
+             style={{backgroundColor: 'rgb(30, 136, 229)', zIndex: 11}}
           ></AppBar>
         </MuiThemeProvider>
         <Modal show={this.state.showModal}

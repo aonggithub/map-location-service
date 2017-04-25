@@ -61,6 +61,7 @@ export class MapContainer extends Component {
           poiOnClick={this.props.changePOILocationDisplay}
           displayPOIPanel={this.props.displayPOIPanel}
           center = {this.state.currentLocation}
+          categories={this.props.categories}
           show= {this.state.currentLocation!=null}
           />
         <MenuPanel

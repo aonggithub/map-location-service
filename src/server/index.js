@@ -7,11 +7,10 @@ const express = require('express'),
       router = require('./router');
 
 // Database Setup
+const port = config.dbPort;
+const database = config.dbURI;
 
-
-const port = 3000;
-const database = 'mongodb://localhost/test';
-
+mongoose.Promise = global.Promise;
 mongoose.connect(database);
 
 app.use(bodyParser.urlencoded({extended:false}));

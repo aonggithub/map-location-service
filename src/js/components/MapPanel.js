@@ -2,18 +2,24 @@ import React, {PropTypes, Component } from 'react';
 import GoogleMap, {GoogleMapMarkers} from 'google-map-react';
 import MapMaker from './MapMaker';
 import GPSFixedButton from './GPSFixedButton';
-import {Modal} from 'react-bootstrap';
+import AddLocationOverlay from './AddLocationOverlay';
+import {Modal, Col, Row, Grid} from 'react-bootstrap';
 
 class MapPanel extends Component {
   constructor (props, context) {
     super(props, context);
-    this.state = {maps: null, map: null, pressTimer: null, showModal: false};
+    this.state = {maps: null,
+                  map: null,
+                  pressTimer: null,
+                  showModal: false,
+                  selectedLocation_lat: null,
+                  selectedLocation_lng: null};
     this.setMapToState = this.setMapToState.bind(this);
     this.gotoCenter = this.gotoCenter.bind(this);
-    this.closeLoginPopup = this.closeLoginPopup.bind(this);
+    this.closeAddLocationOverlay = this.closeAddLocationOverlay.bind(this);
   }
 
-  closeLoginPopup(){
+  closeAddLocationOverlay(){
     this.setState({showModal:false});
   }
 
@@ -24,35 +30,28 @@ class MapPanel extends Component {
     });
     // Map event
     this.state.map.addListener('mouseup', function(obj){
-      console.log("map mouseup");
-      console.log(obj);
       clearTimeout(this.state.pressTimer);
     }.bind(this));
 
     this.state.map.addListener('mousedown', function(obj){
-      console.log("map mousedown");
-      console.log(obj);
-      this.state.pressTimer = window.setTimeout(function(){
-        this.openOverlay();
-      }.bind(this), 1000);
+
+      if(localStorage.getItem("googleIdToken") != null){
+        this.state.pressTimer = window.setTimeout(function(){
+          this.setState({selectedLocation_lat:obj.latLng.lat()});
+          this.setState({selectedLocation_lng:obj.latLng.lng()});
+          this.openOverlay();
+        }.bind(this), 1000);
+      }
     }.bind(this));
 
     this.state.map.addListener('center_changed', function(obj){
-      console.log("map center_changed");
       clearTimeout(this.state.pressTimer);
     }.bind(this));
-
   }
 
   openOverlay(){
-    console.log("openOverlay");
     this.setState({showModal:true});
   }
-
-  // componentDidUpdate(){
-  //   console.log("componentDidUpdate");
-  //   console.log(this.state);
-  // }
 
   gotoCenter(){
     this.state.map.panTo(this.props.center);
@@ -118,19 +117,12 @@ class MapPanel extends Component {
               {servicePlaces}
             </GoogleMap>
             <GPSFixedButton buttonFunc={this.gotoCenter}/>
-            <Modal show={this.state.showModal}
-              onHide={this.closeLoginPopup}
-              backdropStyle={{zIndex: 12}}
-              style={{marginTop:'70px'}}
-              bsSize="sm"
-              aria-labelledby="contained-modal-title-lg">
-              <Modal.Header closeButton style={{textAlign:'center'}}>
-                <Modal.Title>Add Location</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                Add Location
-              </Modal.Body>
-            </Modal>
+            <AddLocationOverlay
+              show={this.state.showModal}
+              categories={this.props.categories}
+              closeOverlayCallback={this.closeAddLocationOverlay}
+              lat={this.state.selectedLocation_lat}
+              lng={this.state.selectedLocation_lng}/>
           </div>
         :
         <div>
@@ -157,7 +149,8 @@ MapPanel.propTypes = {
   height: PropTypes.any,
   poiOnClick: PropTypes.func,
   displayPOIPanel: PropTypes.func,
-  show: PropTypes.boolean
+  show: PropTypes.boolean,
+  categories: PropTypes.any
 }
 
 MapPanel.defaultProps = {

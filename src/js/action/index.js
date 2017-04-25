@@ -61,10 +61,55 @@ var ConstantCategories = [
     }
 ];
 
-export const addServiceLoc = (text) => {
-  return {
-    type: 'ADD_SERVICE_LOC',
-    text
+export const addServiceLoc = (placeName, category, lat, lng) => {
+  return function(dispatch){
+    // Setting fixed data
+
+    if(ClientConfig.env == 'prod'){
+      let tempInputLOC = {
+        _id: "5860929f360fbe6728fd2e10",
+         name:'D',
+         title: placeName,
+         lat:lat,
+         lng:lng,
+         rated:5,
+         category: 'cat' + category
+      }
+
+      let serviceLocations =[].concat(ConstantServiceLocations, tempInputLOC);
+      dispatch({
+        type: 'ADD_SERVICE_LOC',
+        payload: serviceLocations
+      });
+    }
+    // Ending Setting fixed data
+
+    if(ClientConfig.env == 'dev'){
+      let serviceLocationParam = {
+        placeName: placeName,
+        categoryId: 'cat' + category,
+        lat: lat,
+        lng: lng
+      }
+
+      var config = {
+        headers: {'Authorization': 'Bearer' + ' ' + localStorage.getItem("googleIdToken")}
+      }
+
+      // Get data from Server
+      axios.post(`${API_URL}/createServiceLocation`, {serviceLocation:serviceLocationParam}, config)
+      .then(response =>{
+        let data = response.data.data;
+
+        dispatch({
+          type: 'ADD_SERVICE_LOC',
+          payload: data
+        });
+      }).catch(response =>{
+        console.log("HTTP Error: createServiceLocation");
+      })
+    }
+    // Ending getting data from Server
   }
 }
 

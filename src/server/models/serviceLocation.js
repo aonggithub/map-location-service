@@ -3,35 +3,41 @@ const mongoose  = require('mongoose'),
 
 const ServiceLocationSchma = new Schema({
     id: {
-      type: String,
+      $type: String,
       required: true
     },
     name: {
-      type: String,
+      $type: String,
       required: true
     },
     title: {
-      type: String,
+      $type: String,
       required: true
     },
     lat: {
-      type: String,
+      $type: String,
       required: true
     },
     lng: {
-      type: String,
+      $type: String,
       required: true
     },
     category: {
-      type: String,
+      $type: String,
       required: true
     },
     rated: {
-      type: Number,
+      $type: Number,
       required: false,
+    },
+    loc: {
+      type: String,
+      coordinates: [Number]
     }
+
   }, {
-    timestamps: true
+    timestamps: true,
+    typeKey: '$type'
   });
 
 module.exports = mongoose.model('serviceLocations', ServiceLocationSchma, 'serviceLocations');

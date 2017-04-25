@@ -3,9 +3,7 @@ const locations = (state = [], action) => {
     case 'ADD_SERVICE_LOC':
       return [
         ...state,
-        {
-          text: action.text
-        }
+        action.payload
       ]
     case 'GET_SERVICE_LOC':
       return action.payload
